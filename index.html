@@ -24,7 +24,7 @@
         .viewer-wrapper { width: 100%; height: 65%; position: relative; background: #030712; border-radius: 12px; overflow: hidden; border: 1px solid #374151; }
         video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         canvas { pointer-events: none; z-index: 2; }
-        #avatar-container { width: 100%; height: 100%; }
+        #avatar-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #4b5563; }
         .output-box { width: 100%; height: 60px; background: #1f2937; border-radius: 8px; display: flex; align-items: center; padding: 0 15px; font-size: 16px; color: #e5e7eb; border-left: 5px solid #10b981; margin: 15px 0; }
         .input-box { width: 100%; height: 60px; background: #1f2937; color: #fff; border: 1px solid #374151; border-radius: 8px; padding: 0 15px; font-size: 16px; margin: 15px 0; outline: none; }
         .input-box:focus { border-color: #10b981; }
@@ -37,13 +37,15 @@
 </head>
 <body>
     <header>
-        <img src="logo.jpg" alt="AuraSign Logo" class="logo-display">
+        <!-- Fallback text branding added in case your logo.jpg file isn't found -->
+        <img src="logo.jpg" alt="AuraSign Logo" class="logo-display" onerror="this.style.display='none'; document.getElementById('brand-title').style.display='block';">
+        <h1 id="brand-title" style="display:none; color:#111827; font-size:24px; font-weight:800;">✨ AuraSign</h1>
     </header>
     <div class="container">
         <div class="box">
             <h3>Sign to Text Engine</h3>
             <div class="viewer-wrapper">
-                <video id="webcam" autoplay playsinline muted></video>
+                <video id="webcam" autoplay playsinline muted style="display:none;"></video>
                 <canvas id="cv-canvas"></canvas>
             </div>
             <div class="output-box" id="translated-text">System initializing...</div>
@@ -55,9 +57,9 @@
         <div class="box">
             <h3>Text to Sign Engine</h3>
             <div class="viewer-wrapper">
-                <div id="avatar-container"></div>
+                <div id="avatar-container"><span>Loading 3D Workspace...</span></div>
             </div>
-            <input type="text" id="text-input" class="input-box" placeholder="Type a sentence...">
+            <input type="text" id="text-input" class="input-box" placeholder="Type 'hello' or 'thank you' and click animate...">
             <div class="controls">
                 <button onclick="translateTextToSign()">Animate Avatar</button>
                 <button class="secondary" onclick="startVoiceRecognition()">STT Input 🎙️</button>
@@ -67,4 +69,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-

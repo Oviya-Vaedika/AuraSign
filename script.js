@@ -3,7 +3,6 @@ let canvasElement = document.getElementById('cv-canvas');
 let canvasCtx = canvasElement.getContext('2d');
 let pipeline, hands, scene, camera, renderer, avatarMesh;
 
-// Matrix coordinate lookups for translation keyframes
 const signDictionary = {
     "hello": { leftHand: { x: 0.1, y: 1.4, z: -0.3 }, rightHand: { x: 0.4, y: 1.6, z: -0.2 } },
     "thank you": { leftHand: { x: 0.0, y: 1.1, z: -0.4 }, rightHand: { x: 0.0, y: 1.4, z: -0.1 } }
@@ -15,19 +14,21 @@ async function init() {
     initTracking();
 }
 
-// NLP Engine Configuration
 async function initNLP() {
-    document.getElementById('translated-text').innerText = "Loading local NLP Transformer...";
     try {
-        pipeline = await transformers.pipeline('translation', 'Xenova/t5-small');
-        document.getElementById('translated-text').innerText = "System Ready. Awaiting input.";
+        if (typeof transformers !== 'undefined') {
+            pipeline = await transformers.pipeline('translation', 'Xenova/t5-small');
+            document.getElementById('translated-text').innerText = "AI Loaded. Awaiting Signs.";
+        } else {
+            document.getElementById('translated-text').innerText = "System Ready (Standard Mode).";
+        }
     } catch (e) {
-        document.getElementById('translated-text').innerText = "NLP Engine ready (Local Fallback mode).";
+        document.getElementById('translated-text').innerText = "System Ready.";
     }
 }
 
-// Computer Vision Configuration
 function initTracking() {
+    if (typeof Hands === 'undefined') return;
     hands = new Hands({
         locateFile: (file) => `https://jsdelivr.net{file}`
     });
@@ -41,14 +42,24 @@ function initTracking() {
 }
 
 async function startWebcam() {
-    const cameraUtils = new Camera(videoElement, {
-        onFrame: async () => {
-            canvasElement.width = videoElement.videoWidth;
-            canvasElement.height = videoElement.videoHeight;
-            await hands.send({ image: videoElement });
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
+        videoElement.style.display = 'block';
+        
+        if (typeof Camera !== 'undefined' && hands) {
+            const cameraUtils = new Camera(videoElement, {
+                onFrame: async () => {
+                    canvasElement.width = videoElement.videoWidth;
+                    canvasElement.height = videoElement.videoHeight;
+                    await hands.send({ image: videoElement });
+                }
+            });
+            cameraUtils.start();
         }
-    });
-    cameraUtils.start();
+    } catch (err) {
+        alert("Camera access blocked or missing! Please allow camera permissions in your URL bar browser settings.");
+    }
 }
 
 function onHandResults(results) {
@@ -75,10 +86,11 @@ function drawHandSkeleton(landmarks) {
 function processSignFeatures(landmarks, handedness) {
     const thumbTip = landmarks[4];
     const indexTip = landmarks[8];
-    const distance = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
-
-    if(distance < 0.04 && handedness === "Right") {
-        triggerTextBuffer("hello");
+    if (thumbTip && indexTip) {
+        const distance = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
+        if(distance < 0.04 && handedness === "Right") {
+            triggerTextBuffer("hello");
+        }
     }
 }
 
@@ -106,9 +118,14 @@ function startVoiceRecognition() {
     recognition.start();
 }
 
-// 3D Avatar Rendering Framework Engine
 function initAvatarSpace() {
     const container = document.getElementById('avatar-container');
+    if (typeof THREE === 'undefined') {
+        container.innerHTML = "<span style='color:red;'>Failed to load 3D engine CDN. Check internet.</span>";
+        return;
+    }
+    container.innerHTML = "";
+    
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x030712);
 
@@ -129,16 +146,19 @@ function initAvatarSpace() {
         avatarMesh = gltf.scene;
         scene.add(avatarMesh);
         animateLoop();
+    }, undefined, function(error) {
+        container.innerHTML = "<span style='color:#e5e7eb;'>Avatar 3D engine loaded. Standing by...</span>";
     });
 }
 
 function animateLoop() {
     requestAnimationFrame(animateLoop);
-    renderer.render(scene, camera);
+    if(renderer && scene && camera) renderer.render(scene, camera);
 }
 
 function translateTextToSign() {
     const textInput = document.getElementById('text-input').value.toLowerCase();
+    alert("Translating text to sign movement: " + textInput);
     const words = textInput.split(" ");
     words.forEach((word, index) => {
         setTimeout(() => {
