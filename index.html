@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraSign - Dual Sign Translator</title>
+    <!-- MediaPipe Core Tracking CDNs -->
+    <script src="https://jsdelivr.net" crossorigin="anonymous"></script>
+    <script src="https://jsdelivr.net" crossorigin="anonymous"></script>
+    <!-- Three.js 3D Engine Architecture -->
+    <script src="https://cloudflare.com"></script>
+    <script src="https://jsdelivr.net"></script>
+    <!-- Local Browser Hugging Face NLP Engine -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: #f3f4f6; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 15px; background: #ffffff; border-bottom: 2px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .logo-display { height: 65px; width: auto; object-fit: contain; }
+        .container { display: flex; flex: 1; height: calc(100vh - 87px); }
+        .box { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 25px; border-right: 1px solid #1f2937; background: #111827; }
+        .box:last-child { border-right: none; background: #131b2e; }
+        h3 { font-size: 16px; margin-bottom: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
+        .viewer-wrapper { width: 100%; height: 65%; position: relative; background: #030712; border-radius: 12px; overflow: hidden; border: 1px solid #374151; }
+        video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        canvas { pointer-events: none; z-index: 2; }
+        #avatar-container { width: 100%; height: 100%; }
+        .output-box { width: 100%; height: 60px; background: #1f2937; border-radius: 8px; display: flex; align-items: center; padding: 0 15px; font-size: 16px; color: #e5e7eb; border-left: 5px solid #10b981; margin: 15px 0; }
+        .input-box { width: 100%; height: 60px; background: #1f2937; color: #fff; border: 1px solid #374151; border-radius: 8px; padding: 0 15px; font-size: 16px; margin: 15px 0; outline: none; }
+        .input-box:focus { border-color: #10b981; }
+        .controls { width: 100%; display: flex; gap: 15px; }
+        button { flex: 1; background: #10b981; color: #ffffff; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s ease; }
+        button:hover { background: #059669; }
+        button.secondary { background: #374151; color: #d1d5db; }
+        button.secondary:hover { background: #4b5563; }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.jpg" alt="AuraSign Logo" class="logo-display">
+    </header>
+    <div class="container">
+        <div class="box">
+            <h3>Sign to Text Engine</h3>
+            <div class="viewer-wrapper">
+                <video id="webcam" autoplay playsinline muted></video>
+                <canvas id="cv-canvas"></canvas>
+            </div>
+            <div class="output-box" id="translated-text">System initializing...</div>
+            <div class="controls">
+                <button onclick="startWebcam()">Enable Camera</button>
+                <button class="secondary" onclick="speakOutput()">TTS Output 🔊</button>
+            </div>
+        </div>
+        <div class="box">
+            <h3>Text to Sign Engine</h3>
+            <div class="viewer-wrapper">
+                <div id="avatar-container"></div>
+            </div>
+            <input type="text" id="text-input" class="input-box" placeholder="Type a sentence...">
+            <div class="controls">
+                <button onclick="translateTextToSign()">Animate Avatar</button>
+                <button class="secondary" onclick="startVoiceRecognition()">STT Input 🎙️</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
