@@ -8,6 +8,17 @@ const signDictionary = {
     "thank you": { leftHand: { x: 0.0, y: 1.1, z: -0.4 }, rightHand: { x: 0.0, y: 1.4, z: -0.1 } }
 };
 
+// Function triggers structural fade out transition layout operation
+function exitSplashScreen() {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => {
+            splash.style.visibility = 'hidden';
+        }, 800);
+    }
+}
+
 function init() {
     initAvatarSpace();
     initTracking();
@@ -70,8 +81,8 @@ function drawHandSkeleton(landmarks) {
 }
 
 function processSignFeatures(landmarks, handedness) {
-    const thumbTip = landmarks[4];
-    const indexTip = landmarks[8];
+    const thumbTip = landmarks;
+    const indexTip = landmarks;
     if (thumbTip && indexTip) {
         const distance = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
         if(distance < 0.04 && handedness === "Right") {
@@ -98,7 +109,7 @@ function startVoiceRecognition() {
     if(!SpeechRecognition) return alert("Voice input not supported in this browser format.");
     const recognition = new SpeechRecognition();
     recognition.onresult = (event) => {
-        document.getElementById('text-input').value = event.results[0][0].transcript;
+        document.getElementById('text-input').value = event.results.transcript;
         translateTextToSign();
     };
     recognition.start();
@@ -108,7 +119,7 @@ function initAvatarSpace() {
     const container = document.getElementById('avatar-container');
     const statusText = document.getElementById('engine-status');
     
-    // Fallback: If network blocks Three.js, build a standard canvas directly inside the client sandbox
+    // Safety Fallback check blocks
     if (typeof THREE === 'undefined') {
         container.innerHTML = "<div style='text-align:center; padding:20px; color:#9ca3af;'><h3>3D Space Running</h3><p style='font-size:13px; margin-top:5px;'>Type 'hello' below and click animate to test the pipeline tracker alert.</p></div>";
         return;
@@ -130,7 +141,6 @@ function initAvatarSpace() {
     dirLight.position.set(0, 2, 2);
     scene.add(dirLight);
 
-    // Create a 3D Geometry mesh placeholder shape immediately so it cannot turn into a black block
     const geometry = new THREE.BoxGeometry(0.3, 0.4, 0.2);
     const material = new THREE.MeshStandardMaterial({ color: 0x10b981, wireframe: true });
     avatarMesh = new THREE.Mesh(geometry, material);
@@ -143,7 +153,7 @@ function initAvatarSpace() {
 function animateLoop() {
     requestAnimationFrame(animateLoop);
     if(avatarMesh) {
-        avatarMesh.rotation.y += 0.01; // Continuous placeholder motion feedback loop
+        avatarMesh.rotation.y += 0.01;
     }
     if(renderer && scene && camera) renderer.render(scene, camera);
 }
@@ -153,7 +163,6 @@ function translateTextToSign() {
     alert("Avatar AI translation engine reading sequence: \"" + textInput + "\"");
     
     if (avatarMesh) {
-        // Run a geometric visual reaction to show the animation event fired successfully
         avatarMesh.scale.set(1.5, 1.5, 1.5);
         setTimeout(() => { avatarMesh.scale.set(1, 1, 1); }, 500);
     }

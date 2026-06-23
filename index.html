@@ -13,7 +13,23 @@
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: #f3f4f6; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: #f3f4f6; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
+        
+        /* 🌟 FULL SCREEN SPLASH SCREEN OVERLAY */
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s; }
+        .splash-logo { max-width: 450px; width: 85%; height: auto; object-fit: contain; animation: smoothPulse 3s infinite ease-in-out; margin-bottom: 30px; }
+        .enter-btn { background: #10b981; color: white; border: none; padding: 16px 40px; font-size: 18px; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); transition: transform 0.2s, background 0.2s, box-shadow 0.2s; letter-spacing: 1px; text-transform: uppercase; }
+        .enter-btn:hover { background: #059669; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4); }
+        .enter-btn:active { transform: translateY(-1px); }
+
+        /* Smooth animation loops */
+        @keyframes smoothPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(0,0,0,0)); }
+            50% { transform: scale(1.03); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(0,0,0,0)); }
+        }
+
+        /* TRANSLATOR SCREEN INTERFACE */
         header { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 15px; background: #ffffff; border-bottom: 2px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .logo-display { height: 65px; width: auto; object-fit: contain; }
         .container { display: flex; flex: 1; height: calc(100vh - 87px); }
@@ -35,6 +51,14 @@
     </style>
 </head>
 <body>
+
+    <!-- 🌟 SPLASH SCREEN DISPLAY OVERLAY LAYOUT -->
+    <div id="splash-screen">
+        <img src="logo.jpg" alt="AuraSign Branding" class="splash-logo">
+        <button class="enter-btn" onclick="exitSplashScreen()">Enter Translator 🚀</button>
+    </div>
+
+    <!-- MAIN MAIN TRANSLATOR INTERFACE SCREEN -->
     <header>
         <img src="logo.jpg" alt="AuraSign Logo" class="logo-display">
     </header>
