@@ -1,105 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraSign - Dual Sign Translator</title>
-    <!-- Core External Script Injections -->
-    <script src="https://cloudflare.com"></script>
-    <script src="https://jsdelivr.net" crossorigin="anonymous"></script>
-    <script src="https://jsdelivr.net" crossorigin="anonymous"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: #f3f4f6; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
-        
-        /* 🌟 FIXED UP-AND-DOWN ANIMATING SPLASH SCREEN OVERLAY */
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s; }
-        
-        /* Added smooth up-and-down hovering animation for your logo */
-        .splash-logo { max-width: 400px; width: 80%; height: auto; object-fit: contain; animation: logoHover 2.5s infinite ease-in-out; margin-bottom: 25px; }
-        
-        /* Optimized sleek horizontal button dimensions with customized Royal Blue theme color */
-        .enter-btn { background: #2563eb; color: white; border: none; width: 240px; height: 50px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); transition: transform 0.2s, background 0.2s, box-shadow 0.2s; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; }
-        .enter-btn:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
-        .enter-btn:active { transform: translateY(0); }
-
-        /* Smooth geometric hovering keyframe definitions */
-        @keyframes logoHover {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* TRANSLATOR WORKSPACE LAYOUTS */
-        header { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 15px; background: #ffffff; border-bottom: 2px solid #e5e7eb; }
-        .logo-display { height: 65px; width: auto; object-fit: contain; }
-        .container { display: flex; flex: 1; height: calc(100vh - 87px); }
-        .box { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 25px; border-right: 1px solid #1f2937; background: #111827; }
-        .box:last-child { border-right: none; background: #131b2e; }
-        h3 { font-size: 15px; margin-bottom: 12px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; }
-        .viewer-wrapper { width: 100%; height: 65%; position: relative; background: #030712; border-radius: 12px; overflow: hidden; border: 1px solid #374151; }
-        video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
-        canvas { pointer-events: none; z-index: 2; }
-        #avatar-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
-        .output-box { width: 100%; height: 60px; background: #1f2937; border-radius: 8px; display: flex; align-items: center; padding: 0 15px; font-size: 16px; color: #e5e7eb; border-left: 5px solid #10b981; margin: 15px 0; }
-        .input-box { width: 100%; height: 60px; background: #1f2937; color: #fff; border: 1px solid #374151; border-radius: 8px; padding: 0 15px; font-size: 16px; margin: 15px 0; outline: none; }
-        .controls { width: 100%; display: flex; gap: 15px; }
-        button { flex: 1; background: #10b981; color: #ffffff; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s ease; }
-        button:hover { background: #059669; }
-        button.secondary { background: #374151; color: #d1d5db; }
-    </style>
-    
-    <!-- Embedded inline script execution block to bypass external JS browser errors -->
-    <script>
-        function inlineExitSplash() {
-            const splash = document.getElementById('splash-screen');
-            if (splash) {
-                splash.style.opacity = '0';
-                setTimeout(function() { 
-                    splash.style.visibility = 'hidden'; 
-                }, 500);
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <title>Aura Sign</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 🌟 ANIMATED INTRO SCREEN OVERLAY -->
-    <div id="splash-screen">
-        <img src="logo.jpg" alt="AuraSign" class="splash-logo">
-        <!-- Secure HTML-bound action handle added here to handle the screen transition instantly -->
-        <button class="enter-btn" onclick="inlineExitSplash()">Enter Workspace 🚀</button>
-    </div>
+<!-- HOME PAGE -->
+<div id="home">
+  <img src="logo.jpg" class="logo">
+  <h1>Aura Sign</h1>
+  <p>Bridging Silence. Connecting Worlds.</p>
+  <button onclick="startApp()">Start Translating</button>
+</div>
 
-    <!-- MAIN APP WRAPPER INTERFACE LAYOUT -->
-    <header>
-        <img src="logo.jpg" alt="AuraSign Logo" class="logo-display">
-    </header>
-    <div class="container">
-        <div class="box">
-            <h3>Sign to Text Engine</h3>
-            <div class="viewer-wrapper">
-                <video id="webcam" autoplay playsinline muted style="display:none;"></video>
-                <canvas id="cv-canvas"></canvas>
-            </div>
-            <div class="output-box" id="translated-text">System Active. Standby...</div>
-            <div class="controls">
-                <button onclick="startWebcam()">Enable Camera</button>
-                <button class="secondary" onclick="speakOutput()">TTS Output 🔊</button>
-            </div>
-        </div>
-        <div class="box">
-            <h3>Text to Sign Engine</h3>
-            <div class="viewer-wrapper">
-                <div id="avatar-container"></div>
-            </div>
-            <input type="text" id="text-input" class="input-box" placeholder="Type 'hello' or 'thank you'...">
-            <div class="controls">
-                <button onclick="translateTextToSign()">Animate Avatar</button>
-                <button class="secondary" onclick="startVoiceRecognition()">STT Input 🎙️</button>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+<!-- TRANSLATE PAGE -->
+<div id="app" style="display:none;">
+  <div class="left">
+    <input type="text" id="textInput" placeholder="Type hello, please, thank you">
+    <button onclick="translate()">Translate</button>
+    <button onclick="speak()">Play Voice</button>
+    <p id="status"></p>
+  </div>
+
+  <div class="right">
+    <canvas id="avatarCanvas"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
