@@ -12,13 +12,25 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: #f3f4f6; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
         
-        /* 🌟 FULL SCREEN INTRO SPLASH OVERLAY PANEL */
+        /* 🌟 FIXED UP-AND-DOWN ANIMATING SPLASH SCREEN OVERLAY */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s; }
-        .splash-logo { max-width: 400px; width: 80%; height: auto; object-fit: contain; margin-bottom: 35px; }
-        .enter-btn { background: #10b981; color: white; border: none; padding: 15px 45px; font-size: 16px; font-weight: 700; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); transition: transform 0.2s, background 0.2s; text-transform: uppercase; letter-spacing: 1px; }
-        .enter-btn:hover { background: #059669; transform: translateY(-2px); }
+        
+        /* Added smooth up-and-down hovering animation for your logo */
+        .splash-logo { max-width: 400px; width: 80%; height: auto; object-fit: contain; animation: logoHover 2.5s infinite ease-in-out; margin-bottom: 25px; }
+        
+        /* Optimized sleek horizontal button dimensions with customized Royal Blue theme color */
+        .enter-btn { background: #2563eb; color: white; border: none; width: 240px; height: 50px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); transition: transform 0.2s, background 0.2s, box-shadow 0.2s; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; }
+        .enter-btn:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
+        .enter-btn:active { transform: translateY(0); }
 
-        /* TRANSLATOR SCREEN LAYER LAYOUTS */
+        /* Smooth geometric hovering keyframe definitions */
+        @keyframes logoHover {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* TRANSLATOR WORKSPACE LAYOUTS */
         header { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 15px; background: #ffffff; border-bottom: 2px solid #e5e7eb; }
         .logo-display { height: 65px; width: auto; object-fit: contain; }
         .container { display: flex; flex: 1; height: calc(100vh - 87px); }
@@ -36,16 +48,30 @@
         button:hover { background: #059669; }
         button.secondary { background: #374151; color: #d1d5db; }
     </style>
+    
+    <!-- Embedded inline script execution block to bypass external JS browser errors -->
+    <script>
+        function inlineExitSplash() {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                splash.style.opacity = '0';
+                setTimeout(function() { 
+                    splash.style.visibility = 'hidden'; 
+                }, 500);
+            }
+        }
+    </script>
 </head>
 <body>
 
-    <!-- 🌟 CRITICAL BRAND IDENTITY OVERLAY SPLASH -->
+    <!-- 🌟 ANIMATED INTRO SCREEN OVERLAY -->
     <div id="splash-screen">
-        <img src="logo.jpg" alt="AuraSign" class="splash-logo" onclick="exitSplashScreen()">
-        <button class="enter-btn" onclick="exitSplashScreen()">Enter Workspace 🚀</button>
+        <img src="logo.jpg" alt="AuraSign" class="splash-logo">
+        <!-- Secure HTML-bound action handle added here to handle the screen transition instantly -->
+        <button class="enter-btn" onclick="inlineExitSplash()">Enter Workspace 🚀</button>
     </div>
 
-    <!-- REVEALED APP ENGINE FRAMEWORK INTERFACE -->
+    <!-- MAIN APP WRAPPER INTERFACE LAYOUT -->
     <header>
         <img src="logo.jpg" alt="AuraSign Logo" class="logo-display">
     </header>

@@ -8,15 +8,6 @@ const signDictionary = {
     "thank you": { leftHand: { x: 0.0, y: 1.1, z: -0.4 }, rightHand: { x: 0.0, y: 1.4, z: -0.1 } }
 };
 
-// Clear and isolate the user transition click handlers
-function exitSplashScreen() {
-    const splash = document.getElementById('splash-screen');
-    if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => { splash.style.visibility = 'hidden'; }, 500);
-    }
-}
-
 function init() {
     initAvatarSpace();
     initTracking();
@@ -79,8 +70,8 @@ function drawHandSkeleton(landmarks) {
 }
 
 function processSignFeatures(landmarks, handedness) {
-    const thumbTip = landmarks[4];
-    const indexTip = landmarks[8];
+    const thumbTip = landmarks;
+    const indexTip = landmarks;
     if (thumbTip && indexTip) {
         const distance = Math.hypot(thumbTip.x - indexTip.x, thumbTip.y - indexTip.y);
         if(distance < 0.04 && handedness === "Right") {
@@ -116,9 +107,6 @@ function startVoiceRecognition() {
 function initAvatarSpace() {
     const container = document.getElementById('avatar-container');
     
-    // EMBEDDED FAIL-SAFE 3D ENGINE BUILD ENGINE BLOCK
-    // If your network environment blocks Three.js download packages completely, this script
-    // builds an isolated runtime inside your browser sandbox to draw interactive animation objects
     if (typeof THREE === 'undefined') {
         container.innerHTML = `
             <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#030712; border-radius:12px; border:1px dashed #10b981; color:#10b981; padding:20px; text-align:center;">
@@ -147,7 +135,6 @@ function initAvatarSpace() {
     dirLight.position.set(0, 2, 2);
     scene.add(dirLight);
 
-    // Dynamic virtual 3D avatar structure mesh to bypass network errors
     const geometry = new THREE.CylinderGeometry(0.1, 0.15, 0.5, 32);
     const material = new THREE.MeshStandardMaterial({ color: 0x10b981, wireframe: true });
     avatarMesh = new THREE.Mesh(geometry, material);
@@ -165,8 +152,6 @@ function animateLoop() {
 
 function translateTextToSign() {
     const textInput = document.getElementById('text-input').value.toLowerCase();
-    
-    // Trigger direct application animation feedback telemetry
     const targetContainer = document.getElementById('avatar-container');
     if (targetContainer) {
         targetContainer.style.transition = "transform 0.2s ease";
