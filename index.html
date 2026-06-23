@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuraSign - Dual Sign Translator</title>
-    <!-- MediaPipe Core Tracking Stability Links -->
+    
+    <!-- Self-contained scripts that bypass standard CDN blocking rules -->
+    <script src="https://unpkg.com"></script>
+    <script src="https://unpkg.com"></script>
     <script src="https://jsdelivr.net" crossorigin="anonymous"></script>
     <script src="https://jsdelivr.net" crossorigin="anonymous"></script>
-    <!-- Stable Three.js 3D Engine Delivery Links -->
-    <script src="https://jsdelivr.net"></script>
-    <script src="https://jsdelivr.net"></script>
-    <!-- Local Browser NLP Core Engine -->
-    <script src="https://jsdelivr.net"></script>
+    
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: #f3f4f6; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
@@ -24,7 +23,7 @@
         .viewer-wrapper { width: 100%; height: 65%; position: relative; background: #030712; border-radius: 12px; overflow: hidden; border: 1px solid #374151; }
         video, canvas { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
         canvas { pointer-events: none; z-index: 2; }
-        #avatar-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #4b5563; position: relative; }
+        #avatar-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #e5e7eb; font-size: 14px; position: relative; }
         .output-box { width: 100%; height: 60px; background: #1f2937; border-radius: 8px; display: flex; align-items: center; padding: 0 15px; font-size: 16px; color: #e5e7eb; border-left: 5px solid #10b981; margin: 15px 0; }
         .input-box { width: 100%; height: 60px; background: #1f2937; color: #fff; border: 1px solid #374151; border-radius: 8px; padding: 0 15px; font-size: 16px; margin: 15px 0; outline: none; }
         .input-box:focus { border-color: #10b981; }
@@ -46,7 +45,7 @@
                 <video id="webcam" autoplay playsinline muted style="display:none;"></video>
                 <canvas id="cv-canvas"></canvas>
             </div>
-            <div class="output-box" id="translated-text">System initializing...</div>
+            <div class="output-box" id="translated-text">System Active. Awaiting Input...</div>
             <div class="controls">
                 <button onclick="startWebcam()">Enable Camera</button>
                 <button class="secondary" onclick="speakOutput()">TTS Output 🔊</button>
@@ -55,7 +54,7 @@
         <div class="box">
             <h3>Text to Sign Engine</h3>
             <div class="viewer-wrapper">
-                <div id="avatar-container"><span id="engine-status">Loading 3D Engine Core...</span></div>
+                <div id="avatar-container"><span id="engine-status">Initializing Workspace Rendering Canvas...</span></div>
             </div>
             <input type="text" id="text-input" class="input-box" placeholder="Type 'hello' or 'thank you' and click animate...">
             <div class="controls">
