@@ -7,30 +7,24 @@
 </head>
 <body>
 
-<!-- HOME PAGE -->
-<div id="home">
+<header>
   <img src="logo.jpg" class="logo">
   <h1>Aura Sign</h1>
-  <p>Bridging Silence. Connecting Worlds.</p>
-  <button onclick="startApp()">Start Translating</button>
-</div>
+</header>
 
-<!-- TRANSLATE PAGE -->
-<div id="app" style="display:none;">
-  <div class="left">
-    <input type="text" id="textInput" placeholder="Type hello, please, thank you">
-    <button onclick="translate()">Translate</button>
-    <button onclick="speak()">Play Voice</button>
-    <p id="status"></p>
-  </div>
+<div class="container">
+  
+  <textarea id="inputText" placeholder="Type something..."></textarea>
+  
+  <button onclick="translate()">Translate</button>
 
-  <div class="right">
+  <div class="avatar-box">
     <canvas id="avatarCanvas"></canvas>
   </div>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="script.js"></script>
 
 </body>

@@ -1,72 +1,37 @@
-let scene, camera, renderer, model;
+let scene, camera, renderer, cube;
 
-function startApp() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("app").style.display = "flex";
-  init3D();
-}
+init();
 
-function init3D() {
+function init() {
   const canvas = document.getElementById("avatarCanvas");
 
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-  renderer = new THREE.WebGLRenderer({ canvas });
+  camera = new THREE.PerspectiveCamera(75, 800/400, 0.1, 1000);
 
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer = new THREE.WebGLRenderer({canvas: canvas});
+  renderer.setSize(800, 400);
 
-  const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-  scene.add(light);
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+  cube = new THREE.Mesh(geometry, material);
 
-  const loader = new THREE.GLTFLoader();
+  scene.add(cube);
+  camera.position.z = 5;
 
-  // FREE HUMAN MODEL (READY)
-  loader.load(
-    "https://modelviewer.dev/shared-assets/models/Astronaut.glb",
-    function (gltf) {
-      model = gltf.scene;
-      scene.add(model);
-      model.position.set(0, -1, -3);
-    }
-  );
-
-  camera.position.z = 2;
-
-  function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-  }
   animate();
 }
 
-function translate() {
-  const text = document.getElementById("textInput").value.toLowerCase();
-  const status = document.getElementById("status");
-
-  if (!model) {
-    status.innerText = "Avatar loading...";
-    return;
-  }
-
-  if (text === "hello") {
-    model.rotation.y += 0.5; // simple animation
-    status.innerText = "Showing Hello gesture";
-  }
-  else if (text === "please") {
-    model.rotation.x += 0.5;
-    status.innerText = "Showing Please gesture";
-  }
-  else if (text === "thank you") {
-    model.rotation.z += 0.5;
-    status.innerText = "Showing Thank You gesture";
-  }
-  else {
-    status.innerText = "Gesture not available";
-  }
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
 }
 
-function speak() {
-  const text = document.getElementById("textInput").value;
-  const speech = new SpeechSynthesisUtterance(text);
-  speechSynthesis.speak(speech);
+function translate() {
+  const text = document.getElementById("inputText").value;
+
+  // Fake animation (replace later with real AI)
+  cube.rotation.x += 1;
+  cube.rotation.y += 1;
+
+  alert("Demo: Avatar is signing for: " + text);
 }
