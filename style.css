@@ -1,44 +1,62 @@
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: #0f172a;
   color: white;
+  text-align: center;
 }
 
-header {
+/* INTRO */
+#intro {
+  height: 100vh;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
+  background: black;
 }
 
 .logo {
-  width: 50px;
-  margin-right: 10px;
+  width: 180px;
+  margin-bottom: 30px;
 }
 
-.container {
-  text-align: center;
-  margin-top: 50px;
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: #22c55e;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+/* APP */
+#app {
+  padding: 20px;
 }
 
 textarea {
   width: 60%;
-  height: 100px;
+  height: 80px;
   border-radius: 10px;
   padding: 10px;
-  border: none;
 }
 
-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: #22c55e;
-  border: none;
+.buttons {
+  margin: 20px;
+}
+
+video {
+  width: 300px;
+  margin-top: 10px;
   border-radius: 10px;
-  cursor: pointer;
 }
 
-.avatar-box {
-  margin-top: 40px;
-  height: 400px;
+canvas {
+  margin-top: 30px;
 }

@@ -7,24 +7,34 @@
 </head>
 <body>
 
-<header>
-  <img src="logo.jpg" class="logo">
-  <h1>Aura Sign</h1>
-</header>
+<!-- 🔥 INTRO SCREEN -->
+<div id="intro">
+  <img src="logo.png" class="logo">
+  <button onclick="openApp()">Translate</button>
+</div>
 
-<div class="container">
-  
-  <textarea id="inputText" placeholder="Type something..."></textarea>
-  
-  <button onclick="translate()">Translate</button>
+<!-- 🔥 MAIN APP -->
+<div id="app" class="hidden">
 
-  <div class="avatar-box">
-    <canvas id="avatarCanvas"></canvas>
+  <h2>Aura Sign Translator</h2>
+
+  <textarea id="textInput" placeholder="Type or speak..."></textarea>
+
+  <div class="buttons">
+    <button onclick="startSpeech()">🎤 Speak</button>
+    <button onclick="translateText()">Translate</button>
+    <button onclick="startCamera()">📷 Camera</button>
   </div>
+
+  <video id="camera" autoplay></video>
+
+  <canvas id="avatarCanvas"></canvas>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+
 <script src="script.js"></script>
 
 </body>
