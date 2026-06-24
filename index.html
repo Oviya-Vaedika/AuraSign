@@ -2,38 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Aura Sign</title>
+  <title>AuraSign</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- 🔥 INTRO SCREEN -->
-<div id="intro">
+<!-- NAVBAR -->
+<header>
   <img src="logo.png" class="logo">
-  <button onclick="openApp()">Translate</button>
-</div>
+  <h1>AuraSign</h1>
+</header>
 
-<!-- 🔥 MAIN APP -->
-<div id="app" class="hidden">
+<!-- MAIN -->
+<div class="container">
 
-  <h2>Aura Sign Translator</h2>
-
-  <textarea id="textInput" placeholder="Type or speak..."></textarea>
-
-  <div class="buttons">
-    <button onclick="startSpeech()">🎤 Speak</button>
-    <button onclick="translateText()">Translate</button>
-    <button onclick="startCamera()">📷 Camera</button>
+  <!-- LEFT: Sign to Text -->
+  <div class="card">
+    <h2>🖐 Sign ➝ Speech/Text</h2>
+    <button onclick="startCamera()">Start Camera</button>
+    <video id="video" autoplay></video>
+    <p id="signOutput">Detected text will appear here...</p>
   </div>
 
-  <video id="camera" autoplay></video>
+  <!-- CENTER: 3D Avatar -->
+  <div class="avatar-section">
+    <canvas id="avatarCanvas"></canvas>
+  </div>
 
-  <canvas id="avatarCanvas"></canvas>
+  <!-- RIGHT: Text to Sign -->
+  <div class="card">
+    <h2>🎤 Text/Speech ➝ Sign</h2>
+    <input type="text" id="textInput" placeholder="Enter text">
+    <button onclick="speakText()">Convert</button>
+    <p id="status">Avatar will animate...</p>
+  </div>
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
 
 <script src="script.js"></script>
 

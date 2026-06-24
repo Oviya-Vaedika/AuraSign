@@ -1,62 +1,66 @@
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #0f172a;
+  font-family: Arial;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   color: white;
-  text-align: center;
 }
 
-/* INTRO */
-#intro {
-  height: 100vh;
+header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  padding: 10px 20px;
   background: black;
 }
 
 .logo {
-  width: 180px;
-  margin-bottom: 30px;
+  height: 40px;
+  margin-right: 10px;
 }
 
-button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
-  background: #22c55e;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
-/* APP */
-#app {
+.container {
+  display: flex;
+  justify-content: space-between;
   padding: 20px;
 }
 
-textarea {
-  width: 60%;
-  height: 80px;
-  border-radius: 10px;
-  padding: 10px;
+.card {
+  width: 30%;
+  background: #111827;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.5);
 }
 
-.buttons {
-  margin: 20px;
+.card h2 {
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #22c55e;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 10px;
 }
 
 video {
-  width: 300px;
+  width: 100%;
   margin-top: 10px;
   border-radius: 10px;
 }
 
-canvas {
-  margin-top: 30px;
+.avatar-section {
+  width: 35%;
+  height: 400px;
 }
