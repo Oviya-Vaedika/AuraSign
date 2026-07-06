@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign AI Ultimate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="panel">
+    <h3>Camera</h3>
+    <video id="video" autoplay playsinline></video>
+
+    <button onclick="startCamera()">Start Camera</button>
+
+    <h2 id="output">Detected: -</h2>
+  </div>
+
+  <div class="avatar">
+    <canvas id="canvas"></canvas>
+  </div>
+
+</div>
+
+<!-- MediaPipe Holistic -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
