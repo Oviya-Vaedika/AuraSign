@@ -1,15 +1,6 @@
-// ELEMENTS
+// CAMERA
 let video = document.getElementById("video");
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
 
-canvas.width = 640;
-canvas.height = 500;
-
-let lastSpoken = "";
-let history = [];
-
-// START CAMERA
 function startCamera() {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
@@ -18,196 +9,135 @@ function startCamera() {
     });
 }
 
-// HOLISTIC TRACKING
+// HAND TRACKING
+let lastSpoken = "";
+
 function startTracking() {
 
-  const holistic = new Holistic({
+  const hands = new Hands({
     locateFile: file =>
-      `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`
+      `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
   });
 
-  holistic.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7
+  hands.setOptions({
+    maxNumHands: 1,
+    minDetectionConfidence: 0.8
   });
 
-  holistic.onResults(results => {
+  hands.onResults(results => {
+    if (results.multiHandLandmarks.length > 0) {
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+      let gesture = detect(results.multiHandLandmarks[0]);
 
-    if (!results.rightHandLandmarks) {
-      setOutput("No hand");
-      return;
+      document.getElementById("output").innerText =
+        "Detected: " + gesture;
+
+      speak(gesture);
+
+    } else {
+      document.getElementById("output").innerText = "No hand";
     }
-
-    let hand = results.rightHandLandmarks;
-    let pose = results.poseLandmarks;
-
-    drawHand(hand);
-
-    let letter = detectLetter(hand);
-    let word = detectWord(hand, pose);
-
-    let final = word || letter || "Unknown";
-
-    setOutput(final);
-    speak(final);
-
-    trackMotion(hand);
   });
 
   const cam = new Camera(video, {
     onFrame: async () => {
-      await holistic.send({ image: video });
-    },
-    width: 640,
-    height: 480
+      await hands.send({ image: video });
+    }
   });
 
   cam.start();
 }
 
-// DRAW HAND
-function drawHand(lm) {
+// GESTURE LOGIC
+function detect(lm) {
 
-  ctx.strokeStyle = "#22c55e";
-  ctx.lineWidth = 3;
+  let index = lm[8];
+  let middle = lm[12];
 
-  function line(a,b){
-    ctx.beginPath();
-    ctx.moveTo(a.x*640, a.y*500);
-    ctx.lineTo(b.x*640, b.y*500);
-    ctx.stroke();
-  }
+  // Fist → A
+  if (index.y > lm[6].y && middle.y > lm[10].y)
+    return "A";
 
-  let fingers = [
-    [0,1,2,3,4],
-    [0,5,6,7,8],
-    [0,9,10,11,12],
-    [0,13,14,15,16],
-    [0,17,18,19,20]
-  ];
+  // Open → B
+  if (index.y < lm[6].y && middle.y < lm[10].y)
+    return "B";
 
-  fingers.forEach(f => {
-    for(let i=0;i<f.length-1;i++){
-      line(lm[f[i]], lm[f[i+1]]);
-    }
-  });
-}
-
-// HELPER
-function isUp(tip, pip){
-  return tip.y < pip.y;
-}
-
-// 🔥 IMPROVED A–Z DETECTION
-function detectLetter(lm){
-
-  let t = isUp(lm[4],lm[3]);
-  let i = isUp(lm[8],lm[6]);
-  let m = isUp(lm[12],lm[10]);
-  let r = isUp(lm[16],lm[14]);
-  let p = isUp(lm[20],lm[18]);
-
-  let key = `${t}-${i}-${m}-${r}-${p}`;
-
-  switch(key){
-
-    case "false-false-false-false-false": return "A";
-    case "false-true-true-true-true": return "B";
-    case "true-true-false-false-false": return "L";
-    case "false-true-false-false-false": return "D";
-    case "true-false-false-false-true": return "Y";
-    case "false-true-true-false-false": return "U";
-    case "false-true-true-true-false": return "W";
-
-    default: return "";
-  }
-}
-
-// 🔥 WORD SYSTEM (EXPANDABLE TO 100+)
-function detectWord(hand, pose){
-
-  if (!pose) return "";
-
-  let chestY = (pose[11].y + pose[12].y) / 2;
-  let shoulderY = pose[11].y;
-  let handY = hand[0].y;
-
-  // HELLO
-  if (handY < shoulderY - 0.1) {
+  // Point → Hello
+  if (index.y < lm[6].y && middle.y > lm[10].y)
     return "Hello";
-  }
 
-  // PLEASE / SORRY (chest motion)
-  if (Math.abs(handY - chestY) < 0.08) {
-
-    if (isCircularMotion()) {
-      return "Sorry";
-    } else {
-      return "Please";
-    }
-  }
-
-  // YES (up-down motion)
-  if (isVerticalMotion()) {
-    return "Yes";
-  }
-
-  // NO (side motion)
-  if (isHorizontalMotion()) {
-    return "No";
-  }
-
-  return "";
-}
-
-// 🔥 MOTION TRACKING (VERY IMPORTANT)
-function trackMotion(hand){
-
-  history.push({
-    x: hand[0].x,
-    y: hand[0].y
-  });
-
-  if (history.length > 10) {
-    history.shift();
-  }
-}
-
-// MOTION DETECTORS
-function isVerticalMotion(){
-  let ys = history.map(p => p.y);
-  return Math.max(...ys) - Math.min(...ys) > 0.1;
-}
-
-function isHorizontalMotion(){
-  let xs = history.map(p => p.x);
-  return Math.max(...xs) - Math.min(...xs) > 0.1;
-}
-
-function isCircularMotion(){
-  let xs = history.map(p => p.x);
-  let ys = history.map(p => p.y);
-
-  let dx = Math.max(...xs) - Math.min(...xs);
-  let dy = Math.max(...ys) - Math.min(...ys);
-
-  return dx > 0.05 && dy > 0.05;
-}
-
-// OUTPUT
-function setOutput(text){
-  document.getElementById("output").innerText =
-    "Detected: " + text;
+  return "Unknown";
 }
 
 // SPEAK
-function speak(text){
+function speak(text) {
   if (text !== lastSpoken && text !== "Unknown") {
     speechSynthesis.speak(new SpeechSynthesisUtterance(text));
     lastSpoken = text;
   }
 }
+
+// TEXT → SIGN (API READY)
+function convert() {
+  let text = document.getElementById("input").value;
+
+  document.getElementById("status").innerText = "Processing...";
+
+  fetch("https://api.deepmotion.com/v1/animate", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    document.getElementById("status").innerText =
+      "Animation triggered";
+  })
+  .catch(() => {
+    document.getElementById("status").innerText =
+      "API error (check key)";
+  });
+}
+
+// 3D AVATAR
+let scene = new THREE.Scene();
+
+let camera3D = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
+camera3D.position.set(0, 1.2, 2);
+
+let renderer = new THREE.WebGLRenderer({
+  canvas: document.getElementById("canvas"),
+  alpha: true
+});
+
+renderer.setSize(600, 500);
+
+let light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(2,2,2);
+scene.add(light);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+let loader = new THREE.GLTFLoader();
+
+loader.load("avatar.glb", function(gltf) {
+
+  let model = gltf.scene;
+
+  model.scale.set(1.5,1.5,1.5);
+  model.position.set(0,-1,0);
+
+  scene.add(model);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    model.rotation.y += 0.002;
+    renderer.render(scene, camera3D);
+  }
+
+  animate();
+});
