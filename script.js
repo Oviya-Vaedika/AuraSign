@@ -1,200 +1,183 @@
 
 "use strict";
 
-// Aura Sign frontend configuration.
-// The API key stays on Render, never in this file.
 const BACKEND_URL = "https://aura-sign.onrender.com";
-
 const $ = (id) => document.getElementById(id);
 
-const textTab = $("textTab");
-const cameraTab = $("cameraTab");
-const textSection = $("textSection");
-const cameraSection = $("cameraSection");
-const textInput = $("textInput");
-const languageSelect = $("languageSelect");
-const translateButton = $("translateButton");
-const resultText = $("resultText");
-const resultNote = $("resultNote");
-const speakButton = $("speakButton");
-const toast = $("toast");
-
-let toastTimeout;
+let toastTimer;
 let cameraStream = null;
 let handsModel = null;
 let cameraRunning = false;
-let cameraBusy = false;
-let lastHandStatus = "";
+let processingFrame = false;
+let lastDetection = "";
+let threeRenderer = null;
 let threeScene = null;
 let threeCamera = null;
-let threeRenderer = null;
 let avatarGroup = null;
-let avatarClock = null;
 let resizeObserver = null;
 
 function showToast(message) {
+  const toast = $("toast");
   toast.textContent = message;
   toast.classList.add("show");
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => toast.classList.remove("show"), 2800);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
 }
 
-function setResult(message, note = "") {
-  resultText.textContent = message;
-  resultNote.textContent = note;
-  speakButton.disabled = !message.trim();
+function setResult(text, note) {
+  $("resultText").textContent = text;
+  $("resultNote").textContent = note || "";
 }
 
 function setMode(mode) {
-  const isText = mode === "text";
+  const textMode = mode === "text";
 
-  textSection.classList.toggle("hidden", !isText);
-  cameraSection.classList.toggle("hidden", isText);
+  $("textTab").classList.toggle("active", textMode);
+  $("cameraTab").classList.toggle("active", !textMode);
+  $("textTab").setAttribute("aria-selected", String(textMode));
+  $("cameraTab").setAttribute("aria-selected", String(!textMode));
 
-  textTab.classList.toggle("active", isText);
-  cameraTab.classList.toggle("active", !isText);
+  $("textSection").classList.toggle("hidden", !textMode);
+  $("cameraSection").classList.toggle("hidden", textMode);
 
-  textTab.setAttribute("aria-selected", String(isText));
-  cameraTab.setAttribute("aria-selected", String(!isText));
+  // IMPORTANT: hide the entire avatar panel in Sign → Text mode.
+  $("avatarPanel").classList.toggle("hidden", !textMode);
 
-  $("inputHeading").textContent = isText ? "Text to sign" : "Sign to text";
-  $("modeStatus").textContent = isText ? "TEXT MODE" : "CAMERA MODE";
+  $("inputHeading").textContent = textMode ? "Text to sign" : "Sign to text";
+  $("modeStatus").textContent = textMode ? "TEXT MODE" : "CAMERA MODE";
+
+  if (!textMode) {
+    stopCamera();
+    $("avatarMode").textContent = "IDLE MODE";
+  }
 }
 
-textTab.addEventListener("click", () => setMode("text"));
-cameraTab.addEventListener("click", () => setMode("camera"));
+$("textTab").addEventListener("click", () => setMode("text"));
+$("cameraTab").addEventListener("click", () => setMode("camera"));
 
-textInput.addEventListener("input", () => {
-  $("charCount").textContent = `${textInput.value.length} / 500`;
+$("textInput").addEventListener("input", () => {
+  $("charCount").textContent = `${$("textInput").value.length} / 500`;
 });
 
 document.querySelectorAll("[data-example]").forEach((button) => {
   button.addEventListener("click", () => {
-    textInput.value = button.dataset.example;
-    $("charCount").textContent = `${textInput.value.length} / 500`;
-    textInput.focus();
+    $("textInput").value = button.dataset.example;
+    $("charCount").textContent = `${$("textInput").value.length} / 500`;
   });
 });
 
-// Ask the existing Render backend for text-based learning guidance.
-translateButton.addEventListener("click", async () => {
-  const text = textInput.value.trim();
-  const language = languageSelect.value;
+// AI text processing. This endpoint does not supply actual sign animations.
+$("translateButton").addEventListener("click", async () => {
+  const text = $("textInput").value.trim();
+  const language = $("languageSelect").value;
+  const button = $("translateButton");
 
   if (!text) {
-    showToast("Enter a word or sentence first.");
-    textInput.focus();
+    showToast("Enter a message first.");
+    $("textInput").focus();
     return;
   }
 
-  translateButton.disabled = true;
-  translateButton.textContent = "Getting AI guidance…";
+  button.disabled = true;
+  button.textContent = "Processing…";
   $("modeStatus").textContent = "PROCESSING";
-  setResult("Connecting to Aura Sign's AI service…",
-    "This request sends your text and selected language to your backend.");
+
+  setResult(
+    "Processing your request…",
+    "Waiting for the Aura Sign backend."
+  );
 
   try {
     const response = await fetch(`${BACKEND_URL}/api/text-help`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, language })
+      body: JSON.stringify({
+        text,
+        language,
+        task: "sign_translation"
+      })
     });
 
-    let data = {};
+    let data;
     try {
       data = await response.json();
     } catch {
-      throw new Error("The backend returned an unreadable response.");
+      throw new Error("The backend did not return valid JSON.");
     }
 
     if (!response.ok) {
-      throw new Error(data.error || `Backend error (${response.status}).`);
+      throw new Error(data.error || `Server error ${response.status}`);
     }
 
-    const guidance = typeof data.result === "string"
+    const answer = typeof data.result === "string"
       ? data.result.trim()
       : "";
 
-    if (!guidance) {
+    if (!answer) {
       throw new Error("The AI returned an empty response.");
     }
 
     setResult(
-      guidance,
-      `${language} selected. This is AI-generated text guidance, not a verified sign animation.`
+      answer,
+      "AI text response received. A verified sign sequence and matching avatar animations are not yet connected."
     );
-    $("modeStatus").textContent = "RESPONSE READY";
-    showToast("AI guidance received.");
+    $("modeStatus").textContent = "RESPONSE RECEIVED";
   } catch (error) {
-    console.error("Aura Sign request failed:", error);
+    console.error("Aura Sign backend error:", error);
     setResult(
-      "We couldn't get AI guidance right now.",
-      "Check your internet connection, Render service logs and the /api/text-help endpoint."
+      "Translation service unavailable.",
+      "Check the Render logs and the /api/text-help endpoint."
     );
     $("modeStatus").textContent = "CONNECTION ERROR";
-    showToast(error.message || "Could not connect to the backend.");
+    showToast(error.message || "Could not connect to AI.");
   } finally {
-    translateButton.disabled = false;
-    translateButton.innerHTML = "<span>✦</span> Get AI guidance";
+    button.disabled = false;
+    button.textContent = "✦ Translate to Sign";
   }
-});
-
-// Read the returned text aloud using the browser's speech synthesis.
-speakButton.addEventListener("click", () => {
-  const text = resultText.textContent.trim();
-
-  if (!text || !("speechSynthesis" in window)) {
-    showToast("Speech output is not available in this browser.");
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.92;
-  window.speechSynthesis.speak(utterance);
 });
 
 $("copyButton").addEventListener("click", async () => {
-  const text = resultText.textContent.trim();
-
-  if (!text) {
-    showToast("There is no result to copy.");
-    return;
-  }
-
   try {
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText($("resultText").textContent);
     showToast("Result copied.");
   } catch {
-    showToast("Clipboard access failed. Select the result and copy it manually.");
+    showToast("Copy failed. Select the result and copy it manually.");
   }
 });
 
 $("clearButton").addEventListener("click", () => {
   setResult(
-    "Your result will appear here.",
-    "The character currently demonstrates an idle animation, not a verified sign-language sequence."
+    "Enter a message and select Translate to Sign.",
+    "Verified sign animations have not been connected yet."
   );
-  showToast("Result cleared.");
 });
 
-// -------------------- Camera hand detection --------------------
+$("speakButton").addEventListener("click", () => {
+  const text = $("resultText").textContent.trim();
+  if (!text || !("speechSynthesis" in window)) {
+    showToast("Speech is not available in this browser.");
+    return;
+  }
 
-function updateDetection(title, message) {
+  speechSynthesis.cancel();
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+});
+
+// ---------------- CAMERA + HAND LANDMARK DETECTION ----------------
+
+function detectionStatus(title, message) {
   $("detectionTitle").textContent = title;
   $("detectionMessage").textContent = message;
 }
 
-function clearCameraOverlay() {
+function clearOverlay() {
   const canvas = $("cameraOverlay");
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function drawHandLandmarks(landmarks) {
-  const canvas = $("cameraOverlay");
+function drawLandmarks(points) {
   const video = $("cameraVideo");
-  const ctx = canvas.getContext("2d");
+  const canvas = $("cameraOverlay");
 
   if (!video.videoWidth || !video.videoHeight) return;
 
@@ -204,10 +187,10 @@ function drawHandLandmarks(landmarks) {
     canvas.height = video.videoHeight;
   }
 
+  const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (!landmarks) return;
 
-  // Mirror the overlay to match the mirrored camera preview.
+  // Mirror the landmarks to match the mirrored video.
   ctx.save();
   ctx.translate(canvas.width, 0);
   ctx.scale(-1, 1);
@@ -216,7 +199,7 @@ function drawHandLandmarks(landmarks) {
   ctx.fillStyle = "#a78bfa";
   ctx.lineWidth = Math.max(2, canvas.width / 320);
 
-  const connections = [
+  const lines = [
     [0,1],[1,2],[2,3],[3,4],
     [0,5],[5,6],[6,7],[7,8],
     [5,9],[9,10],[10,11],[11,12],
@@ -224,16 +207,14 @@ function drawHandLandmarks(landmarks) {
     [13,17],[17,18],[18,19],[19,20],[0,17]
   ];
 
-  for (const [a, b] of connections) {
+  for (const [a, b] of lines) {
     ctx.beginPath();
-    ctx.moveTo(landmarks[a].x * canvas.width,
-               landmarks[a].y * canvas.height);
-    ctx.lineTo(landmarks[b].x * canvas.width,
-               landmarks[b].y * canvas.height);
+    ctx.moveTo(points[a].x * canvas.width, points[a].y * canvas.height);
+    ctx.lineTo(points[b].x * canvas.width, points[b].y * canvas.height);
     ctx.stroke();
   }
 
-  for (const point of landmarks) {
+  for (const point of points) {
     ctx.beginPath();
     ctx.arc(
       point.x * canvas.width,
@@ -248,11 +229,11 @@ function drawHandLandmarks(landmarks) {
   ctx.restore();
 }
 
-async function loadHandsModel() {
+async function initialiseHandDetector() {
   if (handsModel) return handsModel;
 
   if (typeof Hands === "undefined") {
-    throw new Error("The hand-detection library did not load. Refresh the page and try again.");
+    throw new Error("MediaPipe failed to load. Check your internet connection and refresh.");
   }
 
   handsModel = new Hands({
@@ -263,34 +244,36 @@ async function loadHandsModel() {
   handsModel.setOptions({
     maxNumHands: 2,
     modelComplexity: 1,
-    minDetectionConfidence: 0.65,
+    minDetectionConfidence: 0.6,
     minTrackingConfidence: 0.6
   });
 
   handsModel.onResults((results) => {
-    const landmarks = results.multiHandLandmarks?.[0];
+    const points = results.multiHandLandmarks?.[0];
 
-    if (landmarks) {
-      drawHandLandmarks(landmarks);
+    if (points) {
+      drawLandmarks(points);
       $("cameraLabel").textContent = "HAND DETECTED";
 
-      if (lastHandStatus !== "hand") {
-        updateDetection(
+      if (lastDetection !== "hand") {
+        detectionStatus(
           "Hand detected",
-          "The camera can see a hand. A trained sign-language recognition model is not connected, so the sign itself cannot yet be translated."
+          "Hand landmarks are visible. This version does not yet identify the sign or translate it into words."
         );
-        lastHandStatus = "hand";
+        $("recognisedText").textContent =
+          "Hand detected — sign recognition model not connected.";
+        lastDetection = "hand";
       }
     } else {
-      clearCameraOverlay();
+      clearOverlay();
       $("cameraLabel").textContent = "LOOKING FOR HAND";
 
-      if (lastHandStatus !== "none") {
-        updateDetection(
+      if (lastDetection !== "none") {
+        detectionStatus(
           "No hand detected",
-          "Move your hand into the camera frame and make sure the lighting is clear."
+          "Keep your hand inside the camera frame and try brighter lighting."
         );
-        lastHandStatus = "none";
+        lastDetection = "none";
       }
     }
   });
@@ -298,37 +281,36 @@ async function loadHandsModel() {
   return handsModel;
 }
 
-async function cameraFrameLoop() {
-  if (!cameraRunning || cameraBusy) return;
+async function frameLoop() {
+  if (!cameraRunning) return;
 
-  const video = $("cameraVideo");
-  if (video.readyState >= 2) {
-    cameraBusy = true;
+  if (!processingFrame && $("cameraVideo").readyState >= 2) {
+    processingFrame = true;
     try {
-      await handsModel.send({ image: video });
+      await handsModel.send({ image: $("cameraVideo") });
     } catch (error) {
-      console.error("Hand detection error:", error);
+      console.error("Hand detection frame error:", error);
+      detectionStatus("Detection error", "The hand detector could not process this frame.");
     } finally {
-      cameraBusy = false;
+      processingFrame = false;
     }
   }
 
-  if (cameraRunning) requestAnimationFrame(cameraFrameLoop);
+  if (cameraRunning) requestAnimationFrame(frameLoop);
 }
 
 $("startCameraButton").addEventListener("click", async () => {
   if (cameraRunning) return;
 
-  if (!navigator.mediaDevices?.getUserMedia) {
-    showToast("Camera access requires HTTPS or localhost and a supported browser.");
-    return;
-  }
-
-  const startButton = $("startCameraButton");
-  startButton.disabled = true;
-  updateDetection("Starting camera…", "Please allow camera access when prompted.");
+  const button = $("startCameraButton");
+  button.disabled = true;
+  detectionStatus("Starting camera…", "Allow camera permission when prompted.");
 
   try {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      throw new Error("Camera requires HTTPS or localhost in a supported browser.");
+    }
+
     cameraStream = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: "user" },
       audio: false
@@ -338,33 +320,28 @@ $("startCameraButton").addEventListener("click", async () => {
     video.srcObject = cameraStream;
     await video.play();
 
-    await loadHandsModel();
+    await initialiseHandDetector();
 
     cameraRunning = true;
-    lastHandStatus = "";
-    startButton.disabled = true;
+    lastDetection = "";
     $("stopCameraButton").disabled = false;
     $("cameraLabel").textContent = "CAMERA ACTIVE";
-    $("avatarMode").textContent = "CAMERA MODE";
-    updateDetection("Camera active", "Looking for hands…");
 
-    cameraFrameLoop();
+    detectionStatus("Camera active", "Looking for hands…");
+    frameLoop();
   } catch (error) {
-    console.error("Could not start camera:", error);
+    console.error("Camera startup failed:", error);
     stopCamera();
-    updateDetection(
-      "Camera unavailable",
-      error.message || "Allow camera permission and try again."
-    );
-    showToast(error.message || "Could not start camera.");
+    detectionStatus("Camera unavailable", error.message);
+    showToast(error.message || "Could not start the camera.");
   } finally {
-    startButton.disabled = cameraRunning;
+    button.disabled = cameraRunning;
   }
 });
 
 function stopCamera() {
   cameraRunning = false;
-  cameraBusy = false;
+  processingFrame = false;
 
   if (cameraStream) {
     cameraStream.getTracks().forEach((track) => track.stop());
@@ -372,34 +349,47 @@ function stopCamera() {
   }
 
   const video = $("cameraVideo");
-  video.pause();
-  video.srcObject = null;
+  if (video) {
+    video.pause();
+    video.srcObject = null;
+  }
 
-  clearCameraOverlay();
-  $("cameraLabel").textContent = "CAMERA OFF";
-  $("startCameraButton").disabled = false;
-  $("stopCameraButton").disabled = true;
-  $("avatarMode").textContent = "IDLE MODE";
+  clearOverlay();
 
-  updateDetection("Camera stopped", "Start the camera whenever you're ready.");
-  lastHandStatus = "";
+  if ($("cameraLabel")) $("cameraLabel").textContent = "CAMERA OFF";
+  if ($("startCameraButton")) $("startCameraButton").disabled = false;
+  if ($("stopCameraButton")) $("stopCameraButton").disabled = true;
+
+  lastDetection = "";
 }
 
-$("stopCameraButton").addEventListener("click", stopCamera);
-
-window.addEventListener("pagehide", () => {
+$("stopCameraButton").addEventListener("click", () => {
   stopCamera();
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  detectionStatus("Camera stopped", "Start the camera when you are ready.");
 });
 
-// -------------------- Procedural 3D character --------------------
-// This is a stylised 3D character, not a sign-language animation rig.
+$("clearRecognisedButton").addEventListener("click", () => {
+  $("recognisedText").textContent = "No sign recognised yet.";
+});
 
-function createMaterial(color, roughness = 0.65, metalness = 0.05) {
-  return new THREE.MeshStandardMaterial({ color, roughness, metalness });
-}
+$("speakRecognisedButton").addEventListener("click", () => {
+  const text = $("recognisedText").textContent.trim();
 
-function addPart(parent, geometry, material, position, scale) {
+  if (!text || text === "No sign recognised yet.") {
+    showToast("There is no recognised text to speak.");
+    return;
+  }
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+});
+
+window.addEventListener("pagehide", stopCamera);
+
+// ------------------- 3D AVATAR PREVIEW -------------------
+// This creates a stylised idle character, not a sign-language rig.
+
+function createPart(parent, geometry, material, position, scale) {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.set(...position);
   if (scale) mesh.scale.set(...scale);
@@ -408,20 +398,21 @@ function addPart(parent, geometry, material, position, scale) {
 }
 
 function createAvatar() {
-  const canvas = $("avatarCanvas");
   const fallback = $("avatarFallback");
 
   if (!window.THREE) {
-    fallback.innerHTML = "<span>3D library unavailable</span>";
+    fallback.textContent = "3D library unavailable. Refresh the page.";
     return;
   }
 
   try {
+    const canvas = $("avatarCanvas");
+
     threeScene = new THREE.Scene();
     threeScene.background = new THREE.Color("#0c1020");
 
     threeCamera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-    threeCamera.position.set(0, 1.35, 5.6);
+    threeCamera.position.set(0, 1.25, 5.5);
     threeCamera.lookAt(0, 1.1, 0);
 
     threeRenderer = new THREE.WebGLRenderer({
@@ -430,91 +421,68 @@ function createAvatar() {
       alpha: true
     });
     threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    threeRenderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    threeScene.add(new THREE.HemisphereLight(0xdde7ff, 0x24133f, 2));
+    threeScene.add(new THREE.HemisphereLight(0xe3eaff, 0x24133f, 2));
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3);
-    keyLight.position.set(3, 5, 4);
-    threeScene.add(keyLight);
+    const light = new THREE.DirectionalLight(0xffffff, 2.5);
+    light.position.set(3, 5, 4);
+    threeScene.add(light);
 
-    const rimLight = new THREE.PointLight(0x22d3ee, 22, 10);
-    rimLight.position.set(-2, 2.5, -2);
-    threeScene.add(rimLight);
+    const rim = new THREE.PointLight(0x22d3ee, 18, 10);
+    rim.position.set(-2, 2, -2);
+    threeScene.add(rim);
 
     avatarGroup = new THREE.Group();
     threeScene.add(avatarGroup);
 
-    const skin = createMaterial("#b87962");
-    const skinLight = createMaterial("#d89b7c");
-    const shirt = createMaterial("#6550c9", 0.45);
-    const shirtLight = createMaterial("#8b5cf6", 0.4);
-    const hair = createMaterial("#20182f");
-    const pants = createMaterial("#25324f");
-    const eyes = createMaterial("#f6f7ff");
-    const dark = createMaterial("#171426");
+    const mat = (color) => new THREE.MeshStandardMaterial({ color, roughness: 0.65 });
+    const skin = mat("#d89b7c");
+    const hair = mat("#20182f");
+    const shirt = mat("#6550c9");
+    const sleeve = mat("#8b5cf6");
+    const pants = mat("#25324f");
+    const dark = mat("#171426");
 
-    // Body and neck
-    addPart(avatarGroup, new THREE.CapsuleGeometry(0.42, 0.58, 5, 12),
+    createPart(avatarGroup, new THREE.CapsuleGeometry(0.42, 0.58, 5, 12),
       shirt, [0, 1.12, 0], [1, 1, 0.75]);
-    addPart(avatarGroup, new THREE.CylinderGeometry(0.12, 0.13, 0.22, 16),
+
+    createPart(avatarGroup, new THREE.CylinderGeometry(0.12, 0.13, 0.22, 16),
       skin, [0, 1.67, 0]);
 
-    // Head and hair
-    addPart(avatarGroup, new THREE.SphereGeometry(0.37, 28, 22),
-      skinLight, [0, 2.02, 0]);
-    addPart(avatarGroup, new THREE.SphereGeometry(0.375, 24, 18),
+    createPart(avatarGroup, new THREE.SphereGeometry(0.37, 24, 20),
+      skin, [0, 2.02, 0]);
+
+    createPart(avatarGroup, new THREE.SphereGeometry(0.375, 24, 18),
       hair, [0, 2.22, -0.035], [1.02, 0.65, 0.98]);
 
-    // Eyes and smile
-    addPart(avatarGroup, new THREE.SphereGeometry(0.045, 12, 10),
+    createPart(avatarGroup, new THREE.SphereGeometry(0.045, 12, 10),
       dark, [-0.125, 2.04, 0.327]);
-    addPart(avatarGroup, new THREE.SphereGeometry(0.045, 12, 10),
+    createPart(avatarGroup, new THREE.SphereGeometry(0.045, 12, 10),
       dark, [0.125, 2.04, 0.327]);
 
-    const smile = new THREE.Mesh(
-      new THREE.TorusGeometry(0.09, 0.012, 8, 20, Math.PI),
-      dark
-    );
-    smile.position.set(0, 1.91, 0.345);
-    smile.rotation.z = Math.PI;
-    avatarGroup.add(smile);
-
-    // Shoulders, arms and hands
     const leftArm = new THREE.Group();
     leftArm.position.set(-0.42, 1.42, 0);
     avatarGroup.add(leftArm);
 
-    addPart(leftArm, new THREE.CapsuleGeometry(0.105, 0.36, 4, 10),
-      shirtLight, [0, -0.24, 0], [1, 1, 1]);
-    addPart(leftArm, new THREE.SphereGeometry(0.105, 14, 12),
-      skin, [0, -0.49, 0.015]);
-    addPart(leftArm, new THREE.SphereGeometry(0.115, 14, 12),
-      skinLight, [0, -0.57, 0.045], [1, 1, 0.65]);
+    createPart(leftArm, new THREE.CapsuleGeometry(0.105, 0.36, 4, 10),
+      sleeve, [0, -0.24, 0]);
+    createPart(leftArm, new THREE.SphereGeometry(0.11, 14, 12),
+      skin, [0, -0.52, 0.03]);
 
     const rightArm = new THREE.Group();
     rightArm.position.set(0.42, 1.42, 0);
     avatarGroup.add(rightArm);
 
-    addPart(rightArm, new THREE.CapsuleGeometry(0.105, 0.36, 4, 10),
-      shirtLight, [0, -0.24, 0], [1, 1, 1]);
-    addPart(rightArm, new THREE.SphereGeometry(0.105, 14, 12),
-      skin, [0, -0.49, 0.015]);
-    addPart(rightArm, new THREE.SphereGeometry(0.115, 14, 12),
-      skinLight, [0, -0.57, 0.045], [1, 1, 0.65]);
+    createPart(rightArm, new THREE.CapsuleGeometry(0.105, 0.36, 4, 10),
+      sleeve, [0, -0.24, 0]);
+    createPart(rightArm, new THREE.SphereGeometry(0.11, 14, 12),
+      skin, [0, -0.52, 0.03]);
 
-    // Legs
-    addPart(avatarGroup, new THREE.CapsuleGeometry(0.16, 0.5, 4, 10),
-      pants, [-0.19, 0.35, 0], [1, 1, 1]);
-    addPart(avatarGroup, new THREE.CapsuleGeometry(0.16, 0.5, 4, 10),
-      pants, [0.19, 0.35, 0], [1, 1, 1]);
+    createPart(avatarGroup, new THREE.CapsuleGeometry(0.16, 0.5, 4, 10),
+      pants, [-0.19, 0.35, 0]);
+    createPart(avatarGroup, new THREE.CapsuleGeometry(0.16, 0.5, 4, 10),
+      pants, [0.19, 0.35, 0]);
 
-    addPart(avatarGroup, new THREE.BoxGeometry(0.28, 0.12, 0.42),
-      dark, [-0.19, 0.04, 0.07]);
-    addPart(avatarGroup, new THREE.BoxGeometry(0.28, 0.12, 0.42),
-      dark, [0.19, 0.04, 0.07]);
-
-    // Glowing floor ring
     const ring = new THREE.Mesh(
       new THREE.TorusGeometry(0.8, 0.012, 8, 80),
       new THREE.MeshBasicMaterial({ color: 0x22d3ee })
@@ -526,45 +494,39 @@ function createAvatar() {
 
     fallback.classList.add("hidden");
 
-    const clock = new THREE.Clock();
-    avatarClock = clock;
-
-    function resizeAvatar() {
+    function resize() {
       const width = canvas.clientWidth || 500;
-      const height = canvas.clientHeight || 360;
-
+      const height = canvas.clientHeight || 350;
       threeRenderer.setSize(width, height, false);
       threeCamera.aspect = width / height;
       threeCamera.updateProjectionMatrix();
     }
 
-    resizeAvatar();
+    resize();
 
     if ("ResizeObserver" in window) {
-      resizeObserver = new ResizeObserver(resizeAvatar);
+      resizeObserver = new ResizeObserver(resize);
       resizeObserver.observe($("avatarStage"));
     } else {
-      window.addEventListener("resize", resizeAvatar);
+      window.addEventListener("resize", resize);
     }
 
     function animate() {
       requestAnimationFrame(animate);
-      if (!threeRenderer || !avatarGroup) return;
+      if (!avatarGroup) return;
 
-      const t = clock.getElapsedTime();
+      const t = performance.now() / 1000;
       avatarGroup.position.y = Math.sin(t * 1.2) * 0.025;
-      avatarGroup.rotation.y = Math.sin(t * 0.45) * 0.12;
-      leftArm.rotation.z = Math.sin(t * 1.1) * 0.035;
-      rightArm.rotation.z = -Math.sin(t * 1.1) * 0.035;
+      avatarGroup.rotation.y = Math.sin(t * 0.4) * 0.1;
 
       threeRenderer.render(threeScene, threeCamera);
     }
 
     animate();
   } catch (error) {
-    console.error("3D avatar could not start:", error);
+    console.error("Avatar startup failed:", error);
     fallback.classList.remove("hidden");
-    fallback.innerHTML = "<span>Could not load the 3D character. Try refreshing the page.</span>";
+    fallback.textContent = "The avatar could not load. Refresh and try again.";
   }
 }
 
