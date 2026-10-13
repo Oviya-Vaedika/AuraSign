@@ -3,44 +3,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090b16">
   <title>Aura Sign | Bridging Silence. Connecting Worlds.</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
-    <a class="brand" href="#">
-      <span class="brand-icon">A<span>S</span></span>
+    <a class="brand" href="#" aria-label="Aura Sign home">
+      <img src="logo.png" alt="Aura Sign logo" class="logo">
       <span>
         <strong>AURA SIGN</strong>
         <small>Bridging Silence. Connecting Worlds.</small>
       </span>
     </a>
-    <span class="online-pill"><i></i> AI ASSISTANT</span>
+    <span class="online-pill"><i></i> ACCESSIBILITY AI</span>
   </nav>
 
   <main class="container">
     <section class="hero">
-      <span class="eyebrow">✦ ACCESSIBILITY · TECHNOLOGY · CONNECTION</span>
+      <span class="eyebrow">ACCESSIBILITY · TECHNOLOGY · CONNECTION</span>
       <h1>Communication without <span>barriers.</span></h1>
-      <p>Explore sign-language learning with AI-assisted text guidance,
-         camera-based hand detection and an interactive 3D avatar.</p>
+      <p>Explore sign-language learning with AI-assisted guidance,
+         camera-based hand detection and an interactive avatar.</p>
     </section>
 
-    <div class="mode-tabs" role="tablist">
+    <div class="mode-tabs" role="tablist" aria-label="Translation mode">
       <button class="mode-tab active" id="textTab" role="tab"
-              aria-selected="true" data-mode="text">
-        <span>✍️</span> Text → Sign
+              aria-selected="true">
+        ✍️ Text → Sign
       </button>
       <button class="mode-tab" id="cameraTab" role="tab"
-              aria-selected="false" data-mode="camera">
-        <span>📷</span> Sign → Text
+              aria-selected="false">
+        📷 Sign → Text
       </button>
     </div>
 
     <section class="workspace">
-      <div class="panel input-panel">
+      <section class="panel input-panel">
         <div class="panel-heading">
           <div>
             <span class="eyebrow">YOUR WORKSPACE</span>
@@ -50,15 +50,15 @@
         </div>
 
         <div id="textSection">
-          <label for="textInput">Enter a word or sentence</label>
+          <label for="textInput">Enter your message</label>
           <textarea id="textInput" maxlength="500"
-            placeholder="Try: Hello, how are you?"></textarea>
+            placeholder="Type a word or sentence…"></textarea>
           <div class="input-meta">
-            <span>Keep your message clear and simple.</span>
+            <span>Use a clear, short sentence.</span>
             <span id="charCount">0 / 500</span>
           </div>
 
-          <label for="languageSelect">Sign language</label>
+          <label for="languageSelect">Choose sign language</label>
           <select id="languageSelect">
             <option value="ISL">Indian Sign Language (ISL)</option>
             <option value="ASL">American Sign Language (ASL)</option>
@@ -66,11 +66,11 @@
           </select>
 
           <button class="primary-button" id="translateButton">
-            <span>✦</span> Get AI guidance
+            ✦ Translate to Sign
           </button>
 
           <div class="examples">
-            <span class="eyebrow">TRY AN EXAMPLE</span>
+            <span class="eyebrow">QUICK EXAMPLES</span>
             <div class="example-buttons">
               <button data-example="Hello">Hello</button>
               <button data-example="Thank you">Thank you</button>
@@ -80,17 +80,18 @@
           </div>
 
           <div class="notice">
-            <strong>About this feature</strong>
-            <p>AI guidance can explain a message, but it does not automatically
-            create accurate sign animations. Verified sign data and animation
-            assets are needed for that.</p>
+            <strong>Translation status</strong>
+            <p>AI-generated text is not a verified sign sequence.
+              An accurate avatar translation needs verified sign data
+              and matching animations.</p>
           </div>
         </div>
 
         <div id="cameraSection" class="hidden">
           <p class="description">
-            Allow camera access to detect whether a hand is visible.
-            This starter version does not yet recognise complete signs.
+            Place your hand in the camera frame. This version detects
+            hand landmarks; full sign-language recognition requires
+            a trained sign-recognition model.
           </p>
 
           <div class="camera-frame">
@@ -104,30 +105,46 @@
               Start camera
             </button>
             <button class="secondary-button" id="stopCameraButton" disabled>
-              Stop
+              Stop camera
             </button>
           </div>
 
           <div class="detection-box">
-            <span class="eyebrow">CAMERA STATUS</span>
+            <span class="eyebrow">DETECTION RESULT</span>
             <h3 id="detectionTitle">Waiting for camera</h3>
             <p id="detectionMessage" aria-live="polite">
-              Start the camera to begin hand detection.
+              Start the camera to detect your hands.
             </p>
           </div>
 
+          <label for="recognisedText">Recognised text</label>
+          <div id="recognisedText" class="recognised-text" aria-live="polite">
+            No sign recognised yet.
+          </div>
+
+          <div class="button-row">
+            <button class="secondary-button" id="speakRecognisedButton">
+              🔊 Speak text
+            </button>
+            <button class="secondary-button" id="clearRecognisedButton">
+              Clear
+            </button>
+          </div>
+
           <div class="notice">
-            <strong>Privacy</strong>
-            <p>The camera is processed in your browser by the hand-detection
-            library. This code does not upload camera footage to Gemini.</p>
+            <strong>Camera privacy</strong>
+            <p>Camera frames are processed in your browser by the
+              hand-detection library. This code does not send camera
+              footage to Gemini.</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="panel avatar-panel">
+      <!-- This entire panel is hidden in Sign → Text mode. -->
+      <section class="panel avatar-panel" id="avatarPanel">
         <div class="panel-heading">
           <div>
-            <span class="eyebrow">INTERACTIVE CHARACTER</span>
+            <span class="eyebrow">TEXT → SIGN</span>
             <h2>Avatar studio</h2>
           </div>
           <span class="avatar-indicator"><i></i> 3D VIEW</span>
@@ -136,55 +153,54 @@
         <div class="avatar-stage" id="avatarStage">
           <div class="avatar-loading" id="avatarFallback">
             <div class="fallback-orbit"></div>
-            <span>Preparing 3D avatar…</span>
+            <span>Loading avatar…</span>
           </div>
-          <canvas id="avatarCanvas" aria-label="Interactive 3D character"></canvas>
+          <canvas id="avatarCanvas" aria-label="3D avatar preview"></canvas>
           <div class="stage-caption">
-            <span>✦ AURA AVATAR</span>
+            <span>AURA AVATAR</span>
             <span id="avatarMode">IDLE MODE</span>
           </div>
         </div>
 
         <div class="result-area">
-          <div class="result-heading">
-            <span class="eyebrow">AI GUIDANCE</span>
-            <button id="speakButton" class="icon-button" disabled
-                    title="Read guidance aloud">🔊</button>
-          </div>
+          <span class="eyebrow">TRANSLATION RESULT</span>
           <div id="resultText" aria-live="polite">
-            Your result will appear here.
+            Enter a message and select Translate to Sign.
           </div>
           <p id="resultNote" class="result-note">
-            The character currently demonstrates an idle animation, not a
-            verified sign-language sequence.
+            Verified sign animations have not been connected yet.
           </p>
           <div class="button-row">
             <button class="secondary-button" id="copyButton">Copy result</button>
             <button class="secondary-button" id="clearButton">Clear</button>
+            <button class="secondary-button" id="speakButton">🔊 Speak</button>
           </div>
         </div>
-      </div>
+      </section>
     </section>
 
     <section class="features">
       <article class="feature-card">
-        <span>🌐</span><h3>Multiple languages</h3>
-        <p>Choose ISL, ASL or BSL as the language you want to learn.</p>
+        <span>🌐</span>
+        <h3>Multiple languages</h3>
+        <p>Select ISL, ASL or BSL as your learning language.</p>
       </article>
       <article class="feature-card">
-        <span>🖐️</span><h3>Hand detection</h3>
-        <p>Test camera access and basic hand landmark detection.</p>
+        <span>🖐️</span>
+        <h3>Camera detection</h3>
+        <p>Detect visible hands and display their landmarks.</p>
       </article>
       <article class="feature-card">
-        <span>🤖</span><h3>AI-assisted learning</h3>
-        <p>Connect to your secure backend for text-based guidance.</p>
+        <span>🤖</span>
+        <h3>AI-assisted learning</h3>
+        <p>Connect to the secure backend for text processing.</p>
       </article>
     </section>
 
     <footer>
-      <span class="footer-brand">AURA SIGN</span>
-      <p>Technology should help everyone communicate.</p>
-      <small>Learning prototype · Not a replacement for a qualified sign-language teacher.</small>
+      <strong>AURA SIGN</strong>
+      <p>Bridging Silence. Connecting Worlds.</p>
+      <small>Prototype — not a replacement for a qualified sign-language interpreter.</small>
     </footer>
   </main>
 
