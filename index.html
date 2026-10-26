@@ -2294,5 +2294,134 @@ clrSentBtn.addEventListener('click',()=>{
     <p class="au-foot">Accounts are stored in this browser on this device.</p>
   </div>
 </div>
+
+<!-- Aura Sign custom GLB avatar integration.
+     Keep model.glb in the same folder as this HTML file.
+     Three.js is loaded from CDN; no API key is used. -->
+<style>
+  #auraGlbCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+  #avatarCanvas{display:none!important}
+  #avWrap .ov{z-index:2}
+  #avWrap{min-height:420px}
+  @media(max-width:700px){#avWrap{min-height:350px}}
+  #glbStatus{position:absolute;left:12px;bottom:10px;z-index:4;font-size:11px;padding:5px 8px;border-radius:8px;background:rgba(255,253,246,.88);color:#4c5ea0;border:1px solid #eadfc8;pointer-events:none}
+</style>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+
+const wrap = document.getElementById('avWrap');
+if (wrap) {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'auraGlbCanvas';
+  canvas.setAttribute('aria-label', 'Interactive 3D signing avatar');
+  wrap.insertBefore(canvas, wrap.firstChild);
+
+  const status = document.createElement('div');
+  status.id = 'glbStatus';
+  status.textContent = 'Loading 3D avatar…';
+  wrap.appendChild(status);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+
+  const scene = new THREE.Scene();
+  scene.background = null;
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
+  camera.position.set(0, 0.1, 4.2);
+  camera.lookAt(0, 0, 0);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb7b2c8, 2.0));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
+  keyLight.position.set(2.5, 4, 5);
+  scene.add(keyLight);
+  const fillLight = new THREE.DirectionalLight(0xc9d8ff, 1.0);
+  fillLight.position.set(-3, 1, 2);
+  scene.add(fillLight);
+  const rimLight = new THREE.DirectionalLight(0xffd8ec, 1.3);
+  rimLight.position.set(0, 3, -3);
+  scene.add(rimLight);
+
+  let avatar = null;
+  let mixer = null;
+  const clock = new THREE.Clock();
+
+  function resize() {
+    const w = Math.max(1, wrap.clientWidth);
+    const h = Math.max(1, wrap.clientHeight);
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(wrap);
+  resize();
+
+  const loader = new GLTFLoader();
+  loader.load(
+    './model.glb',
+    (gltf) => {
+      avatar = gltf.scene;
+      avatar.updateMatrixWorld(true);
+
+      // Center the model and fit it to the signing viewport without changing its rig.
+      const bounds = new THREE.Box3().setFromObject(avatar);
+      const size = new THREE.Vector3();
+      const center = new THREE.Vector3();
+      bounds.getSize(size);
+      bounds.getCenter(center);
+      const maxDim = Math.max(size.x, size.y, size.z);
+      if (maxDim > 0) {
+        const scale = 2.45 / maxDim;
+        avatar.scale.setScalar(scale);
+        avatar.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+      }
+      avatar.traverse((obj) => {
+        if (obj.isMesh) {
+          obj.frustumCulled = false;
+          obj.castShadow = true;
+          obj.receiveShadow = true;
+          if (obj.material) {
+            const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+            mats.forEach((mat) => {
+              if ('roughness' in mat) mat.roughness = Math.max(0.45, mat.roughness ?? 0.7);
+              mat.needsUpdate = true;
+            });
+          }
+        }
+      });
+      scene.add(avatar);
+
+      if (gltf.animations && gltf.animations.length) {
+        mixer = new THREE.AnimationMixer(avatar);
+        gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
+        status.textContent = '3D avatar ready · animations loaded';
+      } else {
+        status.textContent = '3D avatar ready · signing animations not included';
+      }
+      status.style.color = '#256b4a';
+      status.style.borderColor = '#b8dfca';
+    },
+    undefined,
+    (error) => {
+      console.error('Aura Sign could not load model.glb:', error);
+      status.textContent = 'Avatar not loaded — keep model.glb beside this HTML';
+      status.style.color = '#a8352f';
+      status.style.borderColor = '#e8b7b4';
+    }
+  );
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = Math.min(clock.getDelta(), 0.05);
+    if (mixer) mixer.update(delta);
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+</script>
+
 </body>
 </html>
