@@ -474,6 +474,11 @@ html[data-theme=dark] .qz-opt.ok{background:#173a2e;color:#9be3c0}html[data-them
 .qz-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.6rem;margin-bottom:1.2rem}.qz-stats div{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:.6rem}.qz-stats b{display:block;font-size:1.2rem;color:var(--tx)}.qz-stats span{font-size:.66rem;color:var(--dim);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
 .qz-miss{text-align:left;margin:0 0 1.2rem}.qz-miss h4{margin:0 0 .5rem;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}.qz-miss div{display:flex;flex-wrap:wrap;gap:.4rem}.qz-miss button{border:1px solid var(--bdr);background:var(--card);color:var(--vl);border-radius:999px;padding:.3rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer}
 @media(max-width:560px){.qz-opts{grid-template-columns:1fr}.qz-opt.art{height:110px}.qz-art{height:170px}}
+
+.stop-b{flex:none;display:flex;align-items:center;gap:.4rem;padding:.54rem 1.1rem;border-radius:var(--rs);border:0;background:#c4474a;color:#fff;font-weight:700;font-size:.85rem;cursor:pointer;animation:stopIn .2s ease}.stop-b[hidden]{display:none}.stop-b:hover{background:#a8353a}
+.stop-b svg{width:14px;height:14px;fill:currentColor;stroke:none}@keyframes stopIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.loop-row{display:flex;align-items:center;gap:.55rem;margin:.1rem 0 .7rem;font-size:.78rem;color:var(--mu);cursor:pointer}.loop-row input{accent-color:var(--v);width:15px;height:15px}
+.stop-live{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:#c4474a}
 </style>
 </head>
 <body>
@@ -491,6 +496,7 @@ html[data-theme=dark] .qz-opt.ok{background:#173a2e;color:#9be3c0}html[data-them
     <ul class="nav-links">
       <li><a href="#studio" data-view="studio" class="on">Studio</a></li>
       <li><a href="#learn" data-view="learn">Learn</a></li>
+      <li><a href="#quiz" data-view="quiz">Quiz</a></li>
     </ul>
   </div>
 </nav>
@@ -531,6 +537,7 @@ html[data-theme=dark] .qz-opt.ok{background:#173a2e;color:#9be3c0}html[data-them
       </button>
       <button class="clr-b" id="clrBtn"><svg viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
       <button class="tb" id="tBtn"><span>Translate</span><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button type="button" class="stop-b" id="stopBtn" hidden><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg><span>Stop</span></button>
     </div>
     <div class="err hidden" id="err">Please enter some text to translate.</div>
     <div class="wp">
@@ -542,6 +549,7 @@ html[data-theme=dark] .qz-opt.ok{background:#173a2e;color:#9be3c0}html[data-them
       <input type="range" id="speedSl" min="0.3" max="2.0" step="0.1" value="1.2"/>
       <span class="sv" id="speedV">1.2×</span>
     </div>
+    <label class="loop-row"><input type="checkbox" id="loopChk" checked><span>Repeat the signing until I press Stop</span></label>
     <div class="ex">
       <p class="ex-l">Try an example</p>
       <div class="ex-g">
@@ -730,7 +738,7 @@ document.querySelectorAll('.ec').forEach(el=>el.addEventListener('click',()=>{
 }));
 
 /* ── CLEAR ── */
-clrBtn.addEventListener('click',()=>{
+clrBtn.addEventListener('click',()=>{stopTranslation();
   ti.value='';ccEl.textContent=0;errEl.classList.add('hidden');
   goEl.textContent='—';signLbl.textContent='';
   glossWords=[];currentIdx=-1;signing=false;signQueue=[];
@@ -777,10 +785,18 @@ setAvState('idle');
 tBtn.addEventListener('click',runTranslation);
 let glossWords=[],currentIdx=-1,signing=false,signQueue=[];
 
+let loopRun=false,loopTok=0,loopTimer=null,pendingStart=null,runSrc=null;
+const loopChk=document.getElementById('loopChk'),stopBtn=document.getElementById('stopBtn');
+function runUI(on){stopBtn.hidden=!on;tBtn.querySelector('span').textContent=on?'Restart':'Translate';}
+function stopTranslation(){loopTok++;loopRun=false;runSrc=null;clearTimeout(loopTimer);clearTimeout(pendingStart);signQueue=[];animCb=null;signing=false;currentIdx=-1;
+  document.querySelectorAll('.wc').forEach(c=>{c.className='wc';});signLbl.textContent='';restPose();setAvState('idle');runUI(false);}
+stopBtn.addEventListener('click',stopTranslation);
+loopChk.addEventListener('change',()=>{if(runSrc&&!stopBtn.hidden)loopRun=loopChk.checked;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!stopBtn.hidden&&document.querySelectorAll('.ln-modal:not([hidden]),.pf-modal:not([hidden]),#authGate:not([hidden])').length===0)stopTranslation();});
 function runTranslation(){
   const raw=ti.value.trim();
   if(!raw){errEl.classList.remove('hidden');ti.focus();return;}
-  errEl.classList.add('hidden');
+  errEl.classList.add('hidden');stopTranslation();
   glossWords=mergePhrases(toGloss(raw));qMode=/\b(where|what|who|why|how|when|which)\b/i.test(raw)?'wh':(raw.includes('?')?'yn':'');
   goEl.textContent=glossWords.join(' ');
   wpWords.innerHTML='';
@@ -788,7 +804,7 @@ function runTranslation(){
     const c=document.createElement('span');c.className='wc';c.textContent=w;c.id='wc'+i;wpWords.appendChild(c);
   });
   setAvState('proc');
-  setTimeout(()=>{setAvState('idle');currentIdx=-1;signQueue=glossWords.flatMap((word,wordIndex)=>{
+  pendingStart=setTimeout(()=>{setAvState('idle');currentIdx=-1;signQueue=glossWords.flatMap((word,wordIndex)=>{
     const clean=word.toUpperCase().replace(/[^A-Z]/g,'');
     const isLast=wordIndex===glossWords.length-1;
     const wk=ALIAS[clean]||clean;
@@ -796,6 +812,7 @@ function runTranslation(){
     return [...clean].map((key,i)=>({key,wordIndex,kind:'letter',first:i===0,endWord:i===clean.length-1,last:false}));
   });
   if(window.AuraUser)AuraUser.track('translate',signQueue.length);
+  runSrc=signQueue.map(x=>({...x}));loopRun=loopChk.checked;runUI(true);
   signing=false;signNext();},800);
 }
 
@@ -878,7 +895,12 @@ document.getElementById('sgReplay')?.addEventListener('click',()=>showAlphabetLe
 updateSignGuide('A');
 function signNext(){
   if(signing)return;
-  if(signQueue.length===0){signLbl.textContent='';restPose();setAvState('done');setTimeout(()=>setAvState('idle'),2200);return;}
+  if(signQueue.length===0){
+    signLbl.textContent='';restPose();
+    if(loopRun&&runSrc){ // loop: rest briefly, then sign the whole phrase again until Stop
+      document.querySelectorAll('.wc').forEach(c=>{c.className='wc';});const tok=loopTok;
+      loopTimer=setTimeout(()=>{if(tok!==loopTok||!loopRun)return;currentIdx=-1;signQueue=runSrc.map(x=>({...x}));signing=false;signNext();},1100);return;}
+    setAvState('done');runUI(false);setTimeout(()=>setAvState('idle'),2200);return;}
   signing=true;currentIdx++;
   const item=signQueue.shift(),w=item.key,isWord=item.kind==='word',sp=signSpeed;
   if(window.AuraUser)AuraUser.track('sign',w);
@@ -892,7 +914,7 @@ function signNext(){
   else if(isWord){const m=WORD_MOTION[w];o={move:Math.max(450,pose.duration*.7/sp),motion:m||null,motDur:m?520/sp:0,hold:250};}
   else{const slow=(w==='J'||w==='Z');o={move:slow?1650:Math.max(380,430/sp),motDur:0,hold:150,pulse:item.first?.14:.07};}
   o.nmm=nmmFor(w,isWord,item.last);
-  startSignAnim(w,pose,o.move,()=>{signing=false;setTimeout(signNext,item.endWord&&!isWord?220/sp:0);},o);
+  const tok=loopTok;startSignAnim(w,pose,o.move,()=>{signing=false;setTimeout(()=>{if(tok===loopTok)signNext();},item.endWord&&!isWord?220/sp:0);},o);
 }
 
 /* ════════════════════════════════════════════
@@ -2533,7 +2555,7 @@ window.AuraUser=(function(){
   function render(){
     const body=$('lnBody');body.innerHTML='';const quiz=tab==='quiz',term=q.trim().toLowerCase();let n=0;
     $('lnTools').style.display=quiz?'none':'';$('lnSortL').style.display=tab==='dict'?'':'none';$('lnSearch').parentNode.style.display=quiz?'none':'';document.querySelector('.ln-prog').style.display=quiz?'none':'';
-    if(quiz){$('lnEmpty').hidden=true;quizStart();return;}
+    if(quiz){$('lnEmpty').hidden=true;stats();quizStart();return;}
     const alpha=tab==='alpha',ok=k=>show==='all'||(show==='done')===learned.has(idOf(k,alpha));
     const mk=list=>{const g=document.createElement('div');g.className=vmode==='list'?'ln-list':'ln-grid';list.forEach(k=>{g.appendChild(vmode==='list'?row(k,alpha):card(k,alpha));n++;});return g;};
     if(!alpha){
@@ -2638,12 +2660,17 @@ window.AuraUser=(function(){
     const box=$('lnChips');box.innerHTML='';box.style.display=tab==='dict'?'':'none';
     ['All',...Object.keys(CAT)].forEach(c=>{const b=document.createElement('button');b.type='button';b.innerHTML=(c==='All'?'':'<i style="background:'+COL[c]+'"></i>')+c;b.className=c===filter?'on':'';b.onclick=()=>{filter=c;chips();render();};box.appendChild(b);});
   }
+  function navOn(){const ln=!$('learnView').hidden,k=!ln?'studio':(tab==='quiz'?'quiz':'learn');document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('on',a.dataset.view===k));}
+  function setTab(t){tab=t;document.querySelectorAll('.ln-tabs button').forEach(x=>x.classList.toggle('on',x.dataset.ln===t));filter='All';if(t!=='quiz')stopTimer();chips();render();built=true;navOn();}
   function view(v){
-    const studio=v!=='learn',tabs=document.querySelector('.tabs'),main=document.querySelector('.main'),ln=$('learnView');
-    tabs.hidden=!studio;main.hidden=!studio;ln.hidden=studio;if(studio)stopTimer();
-    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('on',a.dataset.view===(studio?'studio':'learn')));
-    if(!studio){const nav=document.querySelector('nav');document.documentElement.style.setProperty('--navh',nav.offsetHeight+'px');if(!built){built=true;chips();render();}else stats();}
-    try{history.replaceState(null,'',studio?'#studio':'#learn');}catch(e){}
+    const quiz=v==='quiz',studio=v!=='learn'&&!quiz,tabs=document.querySelector('.tabs'),main=document.querySelector('.main'),ln=$('learnView');
+    tabs.hidden=!studio;main.hidden=!studio;ln.hidden=studio;if(studio)stopTimer();else if(window.stopTranslation)stopTranslation();
+    if(!studio){
+      document.documentElement.style.setProperty('--navh',document.querySelector('nav').offsetHeight+'px');
+      if(quiz&&tab!=='quiz')setTab('quiz');else if(!quiz&&tab==='quiz')setTab('dict');else if(!built){built=true;chips();render();}else stats();
+    }
+    navOn();
+    try{history.replaceState(null,'',studio?'#studio':(quiz?'#quiz':'#learn'));}catch(e){}
     window.scrollTo({top:0});
   }
   function init(){
@@ -2651,13 +2678,13 @@ window.AuraUser=(function(){
     $('lnSearch').addEventListener('input',e=>{q=e.target.value;render();});
     $('lnShow').onchange=e=>{show=e.target.value;render();};$('lnSort').onchange=e=>{sort=e.target.value;render();};
     document.querySelectorAll('#lnViewB button').forEach(b=>b.onclick=()=>{vmode=b.dataset.v;document.querySelectorAll('#lnViewB button').forEach(x=>x.classList.toggle('on',x===b));render();});
-    document.querySelectorAll('.ln-tabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.ln;document.querySelectorAll('.ln-tabs button').forEach(x=>x.classList.toggle('on',x===b));filter='All';chips();render();});
+    document.querySelectorAll('.ln-tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.ln));
     $('lmClose').onclick=closeModal;$('lmGo').onclick=practise;$('lmLearn').onclick=()=>{if(cur){toggle(cur.id);}};
     $('lnModal').addEventListener('mousedown',e=>{if(e.target===$('lnModal'))closeModal();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('lnModal').hidden)closeModal();});
     window.addEventListener('resize',()=>{const nav=document.querySelector('nav');document.documentElement.style.setProperty('--navh',nav.offsetHeight+'px');});
     window.addEventListener('aura:auth',()=>{learned=AuraUser.learned();if(built)render();else stats();});
-    if(location.hash==='#learn')view('learn');
+    if(location.hash==='#learn')view('learn');else if(location.hash==='#quiz')view('quiz');
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
