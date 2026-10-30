@@ -1265,10 +1265,10 @@ function restPose(){
 /* ═══ SIGN DICTIONARY: handshape · palm orientation · location zone · movement path (from the reference charts) ═══ */
 const UP=0,RT=Math.PI/2,LT=-Math.PI/2;
 const Z={temple:[.64,.255,.72,.37],forehead:[.60,.225,.69,.37],mouth:[.555,.31,.66,.41],chin:[.56,.335,.66,.43],throat:[.545,.375,.65,.46],
- chest:[.56,.425,.68,.5],crossR:[.45,.41,.62,.47],neutral:[.64,.43,.72,.48],wave:[.68,.32,.74,.43],overL:[.45,.33,.58,.42],wristL:[.45,.45,.58,.5],prayR:[.53,.40,.64,.47]};
+ chest:[.56,.425,.68,.5],crossR:[.45,.41,.62,.47],neutral:[.64,.43,.72,.48],wave:[.68,.32,.74,.43],overL:[.45,.33,.58,.42],wristL:[.45,.45,.58,.5],prayR:[.53,.40,.64,.47],self:[.60,.345,.70,.43]};
 const HSCUS={'5':{f:[1,1,1,1,1],d:{spread:.95}},FLAT:{f:[1,1,1,1,1],d:{spread:0},to:{x:12,y:-8,a:.12,len:[12,9,7]}},ILY:{f:[1,1,0,0,1],d:{spread:.7}},
  POINT:{f:[0,1,0,0,0],d:{spread:0},to:{x:3,y:-13,a:-1.3}},THUMBUP:{f:[1,0,0,0,0],d:{},to:{x:11,y:-6,a:.22,len:[15,12,10]}},CLAW:{f:[1,1,1,1,1],d:{round:1,spread:.6}}};
-const ORI={f:{},u:{},b:{back:true},d:{back:true},s:{sx:.55}};
+const ORI={f:{},u:{},b:{back:true},d:{back:true},s:{sx:.55},o:{pt:1},i:{pt:-1}};   // o: pointing at the viewer · i: pointing at yourself
 /* ── Arm solver: shoulder + wrist target → natural elbow, with fixed upper-arm / forearm length ── */
 const AY=1.2576,ARM={L1:.2,L2:.185},ARMPREV={R:null,L:null};
 function solveArms(sk,fresh){
@@ -1290,10 +1290,10 @@ function solveArms(sk,fresh){
 const SIGNS={};function S(key,how,R,L){SIGNS[key]={how,R,L};}
 S('HELLO','Flat hand at the temple, palm out; sweep it outward like a salute.',['temple','B',-.12,'f',['arc',.07]]);
 S('GOODBYE','Open hand raised, palm out; wave the fingers.',['wave','5',0,'f',['wag',.05]]);
-S('ME','Point your index finger at your chest.',['chest','POINT',LT,'f',['tap',.015]]);
+S('ME','Point your index finger at your own chest, touching the centre of it.',['self','POINT',LT-.3,'i',['inward',.025]]);
 S('MY','Flat hand on your chest, palm toward you.',['chest','FLAT',LT,'b',null]);
 S('NAME','Cross two H hands and tap them twice.',['chest','H',LT,'s',['tap',.025]],['chest','H',RT,'s',null]);
-S('YOU','Point your index finger forward at the other person.',['neutral','POINT',UP,'f',['forward',.05]]);
+S('YOU','Point your index finger straight at the other person (toward the viewer).',['neutral','POINT',UP,'o',['toward',.05]]);
 S('THANK','Flat fingertips at the chin; move the hand forward and down.',['chin','FLAT',-.1,'f',['forward',.07]]);
 S('ILY','Thumb, index and little finger raised together.',['neutral','ILY',UP,'f',['tap',.012]]);
 S('YES','Make a fist and nod it up and down.',['neutral','S',UP,'f',['nod',.03]]);
@@ -1321,7 +1321,7 @@ S('UPSET','Flat hand turns over at the chest.',['chest','FLAT',LT,'b',['arc',.04
 S('FINISHED','Open hands flip palms outward.',['neutral','5',UP,'b',['wag',.04]],'=');
 S('SIT','Two fingers rest on two fingers.',['overL','H',LT,'s',['tap',.02]],['chest','H',RT,'s',null]);
 S('OPEN','Flat hands swing open from the middle.',['prayR','FLAT',UP,'s',['outward',.06]],'=');
-S('GO','Index finger points and moves forward.',['neutral','POINT',UP,'f',['arc',.07]]);
+S('GO','Index finger points away from you and moves forward.',['neutral','POINT',UP,'o',['arc',.07]]);
 S('WATER','W hand taps the chin.',['chin','W',UP,'f',['tap',.015]]);
 S('MOM','Open hand; thumb taps the chin.',['chin','5',UP,'f',['tap',.012]]);
 S('DAD','Open hand; thumb taps the forehead.',['forehead','5',UP,'f',['tap',.012]]);
@@ -1370,7 +1370,7 @@ const ALIAS={HI:'HELLO',BYE:'GOODBYE',THANKS:'THANK',THANKYOU:'THANK',I:'ME',MYN
  ALLDONE:'FINISHED',FINISH:'FINISHED',MUM:'MOM',MOTHER:'MOM',FATHER:'DAD',EXCUSEME:'EXCUSE',SHOWME:'SHOW',GOODMORNING:'MORNING',YOUREWELCOME:'WELCOME',YOUAREWELCOME:'WELCOME',THIRST:'THIRSTY',FRIENDS:'FRIEND',WANTS:'WANT',NEEDS:'NEED',LIKES:'LIKE',THINKING:'THINK',KNOW:'UNDERSTAND',UNDERSTOOD:'UNDERSTAND',REMEMBERED:'REMEMBER',LOOK:'SEE',WATCH:'SEE',COMING:'COME',GAVE:'GIVE',TODAY:'NOW',PLAYING:'PLAY',TELEPHONE:'PHONE',CALL:'PHONE',FREEZING:'COLD',HAPPINESS:'HAPPY',MAD:'ANGRY',PRETTY:'BEAUTIFUL'};
 const PHR=[['I','LOVE','YOU'],["YOU'RE",'WELCOME'],['YOU','ARE','WELCOME'],['THANK','YOU'],['MY','NAME'],['ALL','DONE'],['EXCUSE','ME'],['SHOW','ME'],['GOOD','MORNING']];
 function mergePhrases(ws){const out=[];for(let i=0;i<ws.length;){const hit=PHR.find(p=>p.every((x,j)=>ws[i+j]===x));if(hit){out.push(hit.join(' '));i+=hit.length;}else{out.push(ws[i]);i++;}}return out;}
-function restHS(act){return {rot:Math.PI,rotDisp:0,sx:1,spread:.12,back:false,d:{},to:null,key:'',act:!!act,dn:{round:0,hook:0,cross:0},tp:null,ia:0};}
+function restHS(act){return {rot:Math.PI,rotDisp:0,sx:1,spread:.12,back:false,d:{},to:null,key:'',act:!!act,dn:{round:0,hook:0,cross:0},tp:null,ia:0,pt:0};}
 const HSC={R:restHS(false),L:restHS(false)},HST={R:restHS(false),L:restHS(false)};let hsProg=1;
 const TO_TAB={A:{x:11,y:-6,a:.22},S:{x:3,y:-13,a:-1.3},E:{x:3,y:-8,a:-1.35},M:{x:4,y:-10,a:-1.3},N:{x:4,y:-10,a:-1.3},T:{x:2,y:-17,a:-1.2},F:{x:9,y:-10,a:-.15,len:[13,10,6]},O:{x:9,y:-10,a:-.3,len:[13,10,6]}};
 function thumbParamsFor(to,key,e0,open){ // numeric description of the thumb so it can be blended instead of snapping
@@ -1385,7 +1385,7 @@ function stepHS(fins){
   const dt=FDT,k=1-Math.exp(-15*dt),kt=1-Math.exp(-17*dt),ki=1-Math.exp(-10*dt);
   ['R','L'].forEach(sd=>{
     const c=HSC[sd],t=HST[sd];
-    c.rot+=angD(c.rot,t.rot)*k;c.rotDisp+=(t.rotDisp-c.rotDisp)*k;c.sx+=(t.sx-c.sx)*k;c.spread+=(t.spread-c.spread)*k;
+    c.pt+=((t.pt||0)-c.pt)*k;c.rot+=angD(c.rot,t.rot)*k;c.rotDisp+=(t.rotDisp-c.rotDisp)*k;c.sx+=(t.sx-c.sx)*k;c.spread+=(t.spread-c.spread)*k;
     if(hsProg>.3&&t.act){c.back=t.back;c.d=t.d;c.to=t.to;c.key=t.key;}
     c.act=t.act;
     // curl-style details blend smoothly instead of switching on
@@ -1398,13 +1398,13 @@ function stepHS(fins){
     c.ia+=(((t.act&&hsProg>.3)?1:0)-c.ia)*ki;
   });
 }
-function handOpts(h){const dn=h.dn||{};return {d:Object.assign({},h.d,{spread:h.spread},h.dn?{round:dn.round,hook:dn.hook,cross:dn.cross}:{}),to:h.to,sx:h.sx,back:h.back,tp:h.tp||undefined};}   // works for live (blended) and static (quiz) hand states
+function handOpts(h){const dn=h.dn||{};return {d:Object.assign({},h.d,{spread:h.spread},h.dn?{round:dn.round,hook:dn.hook,cross:dn.cross}:{}),to:h.to,sx:h.sx,back:h.back,pt:h.pt||0,tp:h.tp||undefined};}   // works for live (blended) and static (quiz) hand states
 function buildSpec(key){
   const sp=SIGNS[key];if(sp.built)return sp.built;
   const pose={duration:900,label:key+' · '+sp.how,fingersR:[.75,.7,.65,.6,.55],fingersL:[.75,.7,.65,.6,.55]},hs={R:restHS(false),L:restHS(false)},paths={};
   const put=(side,a,mir,neg)=>{const z=Z[a[0]],def=HSCUS[a[1]]||{f:LETTER_FINGERS[a[1]]||[1,1,1,1,1],d:ASL_DETAIL[a[1]]||{},to:undefined,key:a[1]},o=ORI[a[3]||'f'],rot=neg?-a[2]:a[2];
     pose['w'+side]={x:mir?1-z[0]:z[0],y:z[1]};pose['e'+side]={x:mir?1-z[2]:z[2],y:z[3]};pose['fingers'+side]=def.f;
-    hs[side]={rot,rotDisp:rot,sx:o.sx||1,spread:def.d.spread??.35,back:!!o.back,d:Object.assign({},def.d,{rotation:0}),to:def.to,key:def.key||'',act:true};
+    hs[side]={rot,rotDisp:rot,sx:o.sx||1,spread:def.d.spread??.35,back:!!o.back,pt:o.pt||0,d:Object.assign({},def.d,{rotation:0}),to:def.to,key:def.key||'',act:true};
     if(a[4])paths[side]=a[4];};
   put('R',sp.R,false,false);if(sp.L==='=')put('L',sp.R,true,true);else if(sp.L)put('L',sp.L,true,false);
   return sp.built={pose,hs,paths};
@@ -1451,6 +1451,24 @@ function buildGuide(){
   if(sigOpts.paths)['R','L'].forEach(sd=>{const m=sigOpts.paths[sd];if(m)run(sd,(t,p)=>applyPath(t,sd,m,p),m[0]);});
   else{const m=sigOpts.motion;(m.b?['R','L']:['R']).forEach(sd=>run(sd,(t,p)=>applyMotion(t,m,p),m.t));}
   if(Object.keys(out.sides).length)GUIDE=out;
+}
+function depthCues(c,W,sides,T){ // [{x,y,rot,k,sgn,pt}] → rings + caption so a front-on pointing finger is unmistakable
+  const now=T?0:performance.now();
+  sides.forEach(s=>{
+    const A=Math.abs(s.pt);if(A<.3)return;
+    const fs=1-.6*A,L=45*fs,lx=s.sgn*10.5+Math.sin(s.sgn*.075)*L,ly=-30-Math.cos(s.sgn*.075)*L,cs=Math.cos(s.rot),sn=Math.sin(s.rot);
+    const tx=s.x+s.k*(lx*cs-ly*sn),ty=s.y+s.k*(lx*sn+ly*cs),ph=T?.35:((now%1100)/1100);
+    c.save();c.lineCap='round';c.strokeStyle='#5c6fb3';
+    if(s.pt>0){ // at the viewer: expanding rings in front of the fingertip
+      for(let i=0;i<3;i++){const q=T?(i+1)/3.5:((ph+i/3)%1),r=W*(.018+.05*q);c.globalAlpha=A*(T?.5:.7*(1-q));c.lineWidth=W*.006;c.beginPath();c.arc(tx,ty,r,0,Math.PI*2);c.stroke();}
+    }else{ // at yourself: a touch target that the fingertip taps onto
+      const r=W*.03;c.globalAlpha=A*(T?.6:.55+.3*Math.sin(now/180));c.lineWidth=W*.006;c.beginPath();c.arc(tx,ty,r,0,Math.PI*2);c.stroke();
+      c.fillStyle='#5c6fb3';c.beginPath();c.arc(tx,ty,W*.007,0,Math.PI*2);c.fill();
+    }
+    c.globalAlpha=A*.9;const txt=s.pt>0?'toward the viewer':'toward yourself';c.font='700 '+Math.round(W*.02)+'px system-ui,sans-serif';c.textAlign='center';
+    const tw=c.measureText(txt).width+W*.03,bx=tx-tw/2,by=ty+W*.055;c.fillStyle=DARK?'rgba(38,37,74,.92)':'rgba(255,253,246,.94)';c.beginPath();c.roundRect?c.roundRect(bx,by,tw,W*.04,W*.02):c.rect(bx,by,tw,W*.04);c.fill();c.strokeStyle='#5c6fb3';c.lineWidth=1;c.stroke();
+    c.fillStyle='#4c5ea0';c.fillText(txt,tx,by+W*.027);c.restore();
+  });
 }
 function drawGuide(c,W,H2,a){
   if(!GUIDE||a<.02)return;
@@ -1907,6 +1925,7 @@ function clFinger(c,bx,by,a0,lens,w,bends,crease,hue){
   if(crease){c.strokeStyle='#e39a78';c.lineWidth=1.1;for(let j=1;j<lens.length;j++){const q=pts[j],nx=Math.cos(a0)*w*.26,ny=Math.sin(a0)*w*.26;c.beginPath();c.moveTo(q[0]-nx,q[1]-ny);c.lineTo(q[0]+nx,q[1]+ny);c.stroke();}}
   if(CL_BACK){const e=pts[pts.length-1];c.beginPath();c.ellipse(e[0],e[1],w*.3,w*.36,a0,0,Math.PI*2);c.fillStyle='#fde0cc';c.fill();c.strokeStyle=CL_EDGE;c.lineWidth=.9;c.stroke();}
   if(CL_TIPS){const e=pts[pts.length-1];c.beginPath();c.arc(e[0],e[1],w*.34,0,Math.PI*2);c.fillStyle=hue;c.fill();c.strokeStyle='#fff';c.lineWidth=1.2;c.stroke();}
+  const e=pts[pts.length-1];return {x:e[0],y:e[1],w};
 }
 function clHand(c,cx,cy,k,fins,side,key,rot0,o){
   o=o||{};const sgn=side==='R'?-1:1,d=o.d||ASL_DETAIL[key]||{spread:key?.35:.12};CL_BACK=!!o.back;
@@ -1926,7 +1945,11 @@ function clHand(c,cx,cy,k,fins,side,key,rot0,o){
     if(rd>0){curl+=(Math.max(curl,.85)-curl)*rd;bn=bn.map((v,j)=>v+([.55,1.05,.9][j]-v)*rd);}
     if(hk>0&&i===1)curl+=(Math.max(curl,.9)-curl)*hk;
     const a0=sgn*(2.5-i)*kf+(i===1?sgn*.3*cr:0)+(i===2?-sgn*.3*cr:0);
-    clFinger(c,sgn*BX[q],BY[q],a0,LN[q],WD[q],bn.map(v=>v*curl),curl<.5,CL_HUES[i]);
+    const ptA=Math.abs(o.pt||0),fs=(i===1&&curl<.5)?1-.6*ptA:1;     // a finger pointing at/away from the viewer is seen end-on, so it is foreshortened
+    const e=clFinger(c,sgn*BX[q],BY[q],a0,LN[q].map(v=>v*fs),WD[q]*(1+(i===1&&(o.pt||0)>0?.14*o.pt:0)),bn.map(v=>v*curl),curl<.5,CL_HUES[i]);
+    if(i===1&&curl<.5&&(o.pt||0)>.25){ // fingertip coming toward the viewer: rounded pad with a nail
+      const r=e.w*.58*Math.min(1,(o.pt-.1)/.6);c.beginPath();c.arc(e.x,e.y,r,0,Math.PI*2);c.fillStyle=CL_SKIN;c.fill();c.strokeStyle=CL_EDGE;c.lineWidth=1.6;c.stroke();
+      c.beginPath();c.ellipse(e.x,e.y-r*.18,r*.52,r*.42,0,0,Math.PI*2);c.fillStyle='#fde0cc';c.fill();c.strokeStyle='#e9a98a';c.lineWidth=.9;c.stroke();}
   });
   if(front)thumb();
   c.restore();CL_BACK=false;
@@ -2042,6 +2065,7 @@ function drawFlat(sk,fins,T){
   });
   if(!T)drawGuide(c,W,H2,GUIDE_A);
   [['L',wl,fins.L],['R',wr,fins.R]].forEach(([side,w,f])=>{const h=HS[side];clHand(c,w.x,w.y,W*.0022*(1+handPulse),f,side,h.key,h.rot,handOpts(h));});
+  depthCues(c,W,[['L',wl],['R',wr]].map(([side,w])=>({x:w.x,y:w.y,rot:HS[side].rot,k:W*.0022*(1+handPulse),sgn:side==='R'?-1:1,pt:HS[side].pt||0})),T);
   c.restore();
 }
 function drawSkeleton(sk,fins){stepHS(fins);drawFlat(sk,fins);handInset(ctx2,avatarCanvas.width,avatarCanvas.height,fins.L,'L',avatarCanvas.width*.03);handInset(ctx2,avatarCanvas.width,avatarCanvas.height,fins.R,'R',avatarCanvas.width*.67);}
@@ -2081,6 +2105,7 @@ function frame(ts){
     if(sigOpts.paths&&sigOpts.motDur){const pp=Math.min(Math.max((el-mv)/sigOpts.motDur,0),1);['R','L'].forEach(sd=>{if(sigOpts.paths[sd])applyPath(curSk,sd,sigOpts.paths[sd],pp);});}
     solveArms(curSk);
     handPulse=sigOpts.pulse*Math.sin(Math.PI*rawT);   // forward pulse marks each letter/word boundary
+    if(sigOpts.paths&&sigOpts.motDur&&Object.values(sigOpts.paths).some(m=>m&&m[0]==='toward')){const mp=Math.min(Math.max((el-mv)/sigOpts.motDur,0),1);handPulse+=.16*Math.abs(Math.sin(Math.PI*mp*2))*envW(mp);}   // push toward the viewer
     if(GUIDE){const mo=el-mv;GUIDE_A=.75*(el<mv?sst(.5,1,rawT):(mo<sigOpts.motDur?1:1-sst(0,1,(mo-sigOpts.motDur)/Math.max(160,sigOpts.hold))));}
     drawSkeleton(curSk,curFin);
     if(el>=animDur){handPulse=0;const cb=animCb;animCb=null;cb();}   // hold is the tail of animDur
@@ -2181,8 +2206,8 @@ const SHT={ // thumb: o=out, s=alongside, x=across palm, *=any  |  fingers index
   U:['x',[1,1,0,0],{g:'t'}],V:['x',[1,1,0,0],{g:'w'}],W:['x',[1,1,1,0],{g:'w'}],X:['x',[.5,0,0,0]],Y:['o',[0,0,0,1]],
   M:['*',[.15,.15,.15,0],{tp:[.82,.2],tuck:1}],N:['*',[.15,.15,0,0],{tp:[.5,.2],tuck:1}],
   '5':['o',[1,1,1,1],{g:'w'}],FLAT:['*',[1,1,1,1],{g:'t'}],ILY:['o',[1,0,0,1]],POINT:['*',[1,0,0,0]],THUMBUP:['o',[0,0,0,0]],CLAW:['*',[.5,.5,.5,.5],{g:'w'}],ROCK:['x',[1,0,0,1]]};
-const ZB={temple:[0,.5],forehead:[0,.45],wave:[0,.55],mouth:[.1,.6],chin:[.15,.65],throat:[.2,.7],chest:[.3,.85],crossR:[.3,.85],prayR:[.3,.85],overL:[.3,.85],wristL:[.35,.9],neutral:[.2,.9]};
-const MOT={wag:['wag'],tap:['updown'],nod:['updown'],tapMouth:['updown'],circle:['circle'],lift:['up'],down:['down'],chop:['down','updown'],forward:['forward','down','still'],arc:['arc','sideways','forward'],outward:['sideways','apart'],pull:['sideways','back'],inward:['sideways','updown','together','back']};
+const ZB={temple:[0,.5],forehead:[0,.45],wave:[0,.55],mouth:[.1,.6],chin:[.15,.65],throat:[.2,.7],chest:[.3,.85],crossR:[.3,.85],prayR:[.3,.85],overL:[.3,.85],wristL:[.35,.9],neutral:[.2,.9],self:[.3,.85]};
+const MOT={toward:['forward','still','down'],wag:['wag'],tap:['updown'],nod:['updown'],tapMouth:['updown'],circle:['circle'],lift:['up'],down:['down'],chop:['down','updown'],forward:['forward','down','still'],arc:['arc','sideways','forward'],outward:['sideways','apart'],pull:['sideways','back'],inward:['sideways','updown','together','back']};
 const DISPLAY={THANK:'THANK YOU',ILY:'I LOVE YOU',ME:'ME',SHOW:'SHOW ME',EXCUSE:'EXCUSE ME',FINISHED:'FINISHED',WELCOME:"YOU'RE WELCOME",MORNING:'GOOD MORNING',NAME:'NAME',EAT:'EAT'};
 const GEST=[ // extra common gestures
   {key:'THUMBS UP (GOOD)',sh:'THUMBUP',mot:['still']},{key:'ROCK ON',sh:'ROCK',mot:['still']},{key:'HIGH FIVE',sh:'5',mot:['still','forward']}];
@@ -2740,6 +2765,7 @@ function motionArrow(c,x,y,t,side,W){
   if(t==='circle'){const r=L*.45;c.beginPath();c.arc(x,y,r,-Math.PI*.2,Math.PI*1.35);c.stroke();const a=Math.PI*1.35;drawArrowHead(c,x+Math.cos(a)*r,y+Math.sin(a)*r,a+Math.PI/2,sz);}
   else if(t==='arc'){c.beginPath();c.moveTo(x,y);c.quadraticCurveTo(x+f*L*.5,y-L*.75,x+f*L,y);c.stroke();drawArrowHead(c,x+f*L,y,Math.atan2(L*.75,f*L*.5),sz);}
   else if(t==='forward')line(x,y,x+f*L*.75,y+L*.7);
+  else if(t==='toward'){/* shown by the avatar's own depth rings */}
   else if(t==='down'||t==='chop')line(x,y-L*.2,x,y+L*.9);
   else if(t==='lift')line(x,y+L*.2,x,y-L*.9);
   else if(t==='pull'||t==='inward')line(x+f*L*.5,y,x-f*L*.5,y);
@@ -2762,8 +2788,8 @@ function poseFrame(cv,key,withArrow){
   const CAT=window.LN_CAT;
   const COL={Basics:'#5c6fb3',Questions:'#c0824a','Feelings & health':'#c4627d','Daily life':'#3f9a86','Family & home':'#8a6cc0',Alphabet:'#5c6fb3','Actions & thinking':'#d0893f','People, time & feelings':'#3d88b5'};
   const NAMEOF={THANK:'Thank you',ILY:'I love you',ME:'Me / I',MY:'My',NAME:'Name',BATHROOM:'Bathroom',FINISHED:'Finished / All done',SHOW:'Show me',EXCUSE:'Excuse me',EAT:'Eat / Food',MORNING:'Good morning',WELCOME:"You're welcome",QUESTION:'Question'};
-  const ZL={temple:'Temple',forehead:'Forehead',mouth:'Mouth',chin:'Chin',throat:'Throat',chest:'Chest',crossR:'Chest (crossed arms)',neutral:'Space in front of you',wave:'Beside the head',overL:'Above your other hand',wristL:'Your other wrist',prayR:'Centre of chest'};
-  const PL={arc:'Arc outward',wag:'Side to side',tap:'Small tap',nod:'Up and down',lift:'Lift upward',down:'Move downward',chop:'Chop down',pull:'Pull toward you',outward:'Move outward',inward:'Bring together',tapMouth:'Tap toward the mouth',circle:'Small circle',forward:'Move forward'};
+  const ZL={temple:'Temple',forehead:'Forehead',mouth:'Mouth',chin:'Chin',throat:'Throat',chest:'Chest',crossR:'Chest (crossed arms)',neutral:'Space in front of you',wave:'Beside the head',overL:'Above your other hand',wristL:'Your other wrist',prayR:'Centre of chest',self:'Touching your chest'};
+  const PL={arc:'Arc outward',wag:'Side to side',tap:'Small tap',nod:'Up and down',lift:'Lift upward',down:'Move downward',chop:'Chop down',pull:'Pull toward you',outward:'Move outward',inward:'Bring together',tapMouth:'Tap toward the mouth',circle:'Small circle',forward:'Move forward',toward:'Point at the viewer'};
   const SH={B:'Flat hand',FLAT:'Flat hand','5':'Open hand',POINT:'Index finger',O:'Fingertips together',C:'Curved C hand',S:'Fist',A:'Fist, thumb alongside',T:'T hand',H:'Two fingers sideways',U:'Two fingers up',W:'Three fingers up',F:'F hand (OK shape)',X:'Hooked index',R:'Crossed fingers',ILY:'Thumb, index, pinky up',THUMBUP:'Fist, thumb up',CLAW:'Clawed hand'};
   const FACE={WH:['WHAT','WHERE','WHEN','HOW'],SAD:['SORRY','SAD','PAIN','SICK','UPSET','TIRED','CONFUSED'],HAPPY:['HELLO','THANK','PLEASE','LOVE','ILY','GOOD','FAMILY','MORNING','WELCOME','EXCITED']};
   const I={pin:'<svg viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>',mv:'<svg viewBox="0 0 24 24"><path d="M3 12h14M13 6l6 6-6 6"/></svg>',hand:'<svg viewBox="0 0 24 24"><path d="M8 13V5a1.5 1.5 0 0 1 3 0v6M11 11V3.5a1.5 1.5 0 0 1 3 0V11M14 11V5a1.5 1.5 0 0 1 3 0v8c0 4-2 7-6 7-3 0-4.5-2-6-5l-1.5-3a1.5 1.5 0 0 1 2.6-1.5L8 13"/></svg>',chk:'<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'};
