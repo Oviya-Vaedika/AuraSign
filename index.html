@@ -479,6 +479,29 @@ html[data-theme=dark] .qz-opt.ok{background:#173a2e;color:#9be3c0}html[data-them
 .stop-b svg{width:14px;height:14px;fill:currentColor;stroke:none}@keyframes stopIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
 .loop-row{display:flex;align-items:center;gap:.55rem;margin:.1rem 0 .7rem;font-size:.78rem;color:var(--mu);cursor:pointer}.loop-row input{accent-color:var(--v);width:15px;height:15px}
 .stop-live{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;color:#c4474a}
+
+.qx{max-width:1100px;margin:1.2rem auto 0}
+.qx-hero{padding:1.6rem 1.8rem;border:1px solid var(--bdr);border-radius:20px;background:linear-gradient(135deg,#eef0fa,#fbf1e0);margin-bottom:1rem}html[data-theme=dark] .qx-hero{background:linear-gradient(135deg,#25244d,#1d1c3a)}
+.qx-hero h1{margin:.3rem 0 .4rem;font-size:1.7rem;color:var(--tx);letter-spacing:-.01em}.qx-hero p{margin:0;max-width:680px;color:var(--mu);font-size:.9rem;line-height:1.6}
+.qx-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:1rem}
+.qx-card{border:1px solid var(--bdr);border-radius:18px;background:var(--card);padding:1.3rem 1.4rem}.qx-card h3{margin:0 0 .7rem;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.qx-pre{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.qx-pre button{display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;text-align:left;border:1.5px solid var(--bdr);background:var(--card2);border-radius:12px;padding:.8rem .9rem;cursor:pointer;color:var(--tx);transition:border-color .15s,transform .15s}.qx-pre button:hover{border-color:var(--v);transform:translateY(-1px)}.qx-pre b{font-size:.92rem}.qx-pre span{font-size:.74rem;color:var(--mu)}
+.qx-cfg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-bottom:.8rem}.qx-cfg label{display:flex;flex-direction:column;gap:.3rem;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.qx-cfg select{border:1px solid var(--bdr);background:var(--card);color:var(--tx);border-radius:10px;padding:.55rem .6rem;font-size:.84rem;font-weight:600;outline:none}
+.qx-timed{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--mu);margin:0 0 1rem;cursor:pointer}
+.qx-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}.qx-kpi div{background:var(--card2);border:1px solid var(--bdr);border-radius:12px;padding:.7rem .5rem;text-align:center}.qx-kpi b{display:block;font-size:1.35rem;color:var(--tx)}.qx-kpi span{font-size:.64rem;color:var(--dim);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.qx-rec{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.4rem}.qx-rec li{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--tx);padding:.5rem .7rem;background:var(--card2);border:1px solid var(--bdr);border-radius:10px}.qx-rec li span{flex:1}.qx-rec li b{color:var(--vl)}.qx-rec li small{color:var(--dim);font-size:.7rem}.qx-rec li.none{color:var(--mu)}
+.qx-head{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:.8rem 1.1rem;border:1px solid var(--bdr);border-radius:14px;background:var(--card);margin-bottom:.8rem}
+.qx-ttl b{display:block;font-size:.92rem;color:var(--tx)}.qx-ttl span{font-size:.72rem;color:var(--dim);font-weight:600}.qx-dots{flex:1;display:flex;gap:4px;min-width:120px}.qx-dots i{flex:1;height:7px;border-radius:999px;background:var(--card2);border:1px solid var(--bdr)}.qx-dots i.cur{background:var(--vl);border-color:var(--vl)}.qx-dots i.ok{background:#3f9a6b;border-color:#3f9a6b}.qx-dots i.bad{background:#c4474a;border-color:#c4474a}
+.qx-pills{display:flex;align-items:center;gap:.5rem}.qx-quit{border:0;background:none;color:var(--dim);font-size:.74rem;font-weight:700;cursor:pointer;text-decoration:underline}
+.qx-play{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:1rem;align-items:start}
+.qx-stage{border:1px solid var(--bdr);border-radius:18px;background:var(--card);padding:1rem}.qx-art{display:flex;align-items:center;justify-content:center;background:var(--card2);border:1px solid var(--bdr);border-radius:14px;min-height:300px;overflow:hidden}.qx-art canvas{width:100%;height:auto;display:block}.qx-art img{max-height:300px;max-width:90%;background:#fff;border-radius:10px;padding:6px}
+.qx-desc{padding:1.4rem 1.6rem;font-size:1.25rem;font-weight:700;color:var(--tx);line-height:1.5;text-align:center}.qx-stage .qz-hint{margin:.8rem 0 0}
+.qx-side{border:1px solid var(--bdr);border-radius:18px;background:var(--card);padding:1.2rem}.qx-q{font-size:1.1rem;font-weight:800;color:var(--tx);margin-bottom:.9rem}.qx-opts{display:grid;grid-template-columns:1fr;gap:.55rem}.qx-opts .qz-opt.art{height:auto;aspect-ratio:1.2}.qx-opts:has(.art){grid-template-columns:1fr 1fr}
+.qx-res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:1rem}.qx-resl,.qx-resr{border:1px solid var(--bdr);border-radius:18px;background:var(--card);padding:1.6rem 1.4rem}.qx-resl{text-align:center}.qx-resl h2{margin:.2rem 0 .2rem;font-size:1.5rem;color:var(--tx)}.qx-resl>p{margin:0 0 1rem;color:var(--mu);font-size:.88rem}.qx-resr h3{margin:0 0 .7rem;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.qx-br{display:grid;grid-template-columns:130px 1fr 40px;align-items:center;gap:.6rem;font-size:.8rem;color:var(--tx);margin-bottom:.45rem}.qx-br div{height:8px;border-radius:999px;background:var(--card2);overflow:hidden;border:1px solid var(--bdr)}.qx-br i{display:block;height:100%;border-radius:999px}.qx-br b{text-align:right;font-size:.76rem;color:var(--mu)}
+.qx-miss{display:flex;flex-direction:column;gap:.5rem}.qx-miss p{margin:0;color:var(--mu);font-size:.84rem}.qx-mrow{display:grid;grid-template-columns:84px 1fr auto;gap:.8rem;align-items:center;padding:.4rem .6rem .4rem .4rem;border:1px solid var(--bdr);border-radius:12px;background:var(--card2)}.qx-th{background:var(--card);border-radius:8px;overflow:hidden;height:64px;display:flex;align-items:center;justify-content:center}.qx-th canvas{width:100%;height:auto}.qx-th img{max-height:60px;background:#fff}.qx-mrow b{display:block;font-size:.88rem;color:var(--tx)}.qx-mrow small{color:var(--dim);font-size:.72rem}.qx-mrow button{border:1px solid var(--bdr);background:var(--card);color:var(--vl);border-radius:8px;padding:.35rem .8rem;font-size:.76rem;font-weight:700;cursor:pointer}
+@media(max-width:860px){.qx-grid,.qx-play,.qx-res{grid-template-columns:1fr}.qx-pre{grid-template-columns:1fr 1fr}.qx-br{grid-template-columns:100px 1fr 38px}}
 </style>
 </head>
 <body>
@@ -880,7 +903,8 @@ function showAlphabetLetter(letter){
  signLbl.textContent='ASL LETTER '+letter+' · '+(letter==='J'||letter==='Z'?'movement':'handshape');
  updateSignGuide(letter);
  const pose=getPose(letter);
- startSignAnim(letter,pose,1450,()=>{signing=false;});
+ if(letter==='J'||letter==='Z')startSignAnim(letter,pose,620,()=>{signing=false;},{move:620,motion:{t:letter,a:1},motDur:1250,hold:420,pulse:.07});
+ else startSignAnim(letter,pose,900,()=>{signing=false;},{move:900,hold:700,pulse:.07});
 }
 const letterChooser=document.getElementById('sgLetters');
 if(letterChooser){
@@ -910,9 +934,10 @@ function signNext(){
   signLbl.textContent=isWord?(pose.label||('Signing: '+w)):'Letter '+w+' · fingerspelling';
   updateSignGuide(w);
   let o;
-  if(isWord&&spec){o={move:Math.max(560,850/sp),paths:spec.paths,motDur:700/sp,hold:200,hs:spec.hs};}
-  else if(isWord){const m=WORD_MOTION[w];o={move:Math.max(450,pose.duration*.7/sp),motion:m||null,motDur:m?520/sp:0,hold:250};}
-  else{const slow=(w==='J'||w==='Z');o={move:slow?1650:Math.max(380,430/sp),motDur:0,hold:150,pulse:item.first?.14:.07};}
+  if(isWord&&spec){o={move:Math.max(560,850/sp),paths:spec.paths,motDur:Math.max(480,720/sp),hold:Math.max(230,300/sp),hs:spec.hs};}
+  else if(isWord){const m=WORD_MOTION[w];o={move:Math.max(450,pose.duration*.7/sp),motion:m||null,motDur:m?Math.max(400,540/sp):0,hold:Math.max(230,300/sp)};}
+  else if(w==='J'||w==='Z'){o={move:Math.max(480,600/sp),motion:{t:w,a:1},motDur:Math.max(800,1150/sp),hold:Math.max(200,260/sp),pulse:item.first?.14:.07};}
+  else{o={move:Math.max(400,450/sp),motDur:0,hold:Math.max(190,230/sp),pulse:item.first?.14:.07};}
   o.nmm=nmmFor(w,isWord,item.last);
   const tok=loopTok;startSignAnim(w,pose,o.move,()=>{signing=false;setTimeout(()=>{if(tok===loopTok)signNext();},item.endWord&&!isWord?220/sp:0);},o);
 }
@@ -1164,7 +1189,7 @@ const LETTER_FINGERS={
 function getPose(w){
   const key=String(w).toUpperCase();
   if(LETTER_FINGERS[key])return {duration:1550,fingersR:LETTER_FINGERS[key],
-    fingersL:[.3,.3,.3,.3,.3],wR:{x:.66,y:.33},eR:{x:.71,y:.47},
+    fingersL:[.3,.3,.3,.3,.3],wR:{x:.685,y:.255},eR:{x:.72,y:.40},
     label:'Fingerspelling '+key+' · illustrated handshape'};
   return POSES[key]||POSES['__DEFAULT__'];
 }
@@ -1179,7 +1204,10 @@ let tgtFin={L:[.75,.7,.65,.6,.55],R:[.75,.7,.65,.6,.55]};
 let fromSk=null,fromFin=null,animCb=null,animStart=0,animDur=0;
 
 function lerp(a,b,t){return a+(b-a)*t;}
-function eio(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+function eio(t){t=t<0?0:t>1?1:t;return t*t*t*(t*(t*6-15)+10);}   // minimum-jerk: zero speed and acceleration at both ends
+const sst=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
+const envW=p=>sst(0,.14,p)*sst(1,.86,p);                         // fades repeated motions in and out so they never start/stop abruptly
+let FDT=.0167;                                                    // seconds since last frame – all smoothing is frame-rate independent
 function clone(o){return JSON.parse(JSON.stringify(o));}
 
 /* ── Non-manual markers, word motion paths, pulses ── */
@@ -1204,14 +1232,23 @@ const WORD_MOTION={HELLO:{t:'arc',a:.08},GOODBYE:{t:'wag',a:.035},THANK:{t:'forw
  HELP:{t:'lift',a:.06,b:1},WANT:{t:'pull',a:.05,b:1},THINK:{t:'circle',a:.025},UNDERSTAND:{t:'lift',a:.03},
  LOVE:{t:'tap',a:.015,b:1},MORE:{t:'tap',a:.02,b:1},AGAIN:{t:'arc',a:.05},STOP:{t:'tap',a:.04},WAIT:{t:'wag',a:.03,b:1},
  WATER:{t:'tap',a:.02},FOOD:{t:'tap',a:.025},GOOD:{t:'forward',a:.05},KNOW:{t:'tap',a:.015},HOME:{t:'tap',a:.02},WORK:{t:'tap',a:.03}};
+function letterPath(t,u){ // path of the fingertip while fingerspelling J (stem + hook) and Z (three strokes); returns normalised dx,dy
+  if(t==='J'){const stem=.58,H=.095,r=.042;
+    if(u<stem)return [0,H*(u/stem)/AY];
+    const th=(u-stem)/(1-stem)*Math.PI*.9;return [-r*(1-Math.cos(th)),(H+r*Math.sin(th))/AY];}
+  const W=.105,Hh=.105,seg=[W,Math.hypot(W,Hh),W],tot=seg[0]+seg[1]+seg[2],P=[[0,0],[W,0],[0,Hh],[W,Hh]];
+  let d=u*tot,i=0;while(i<2&&d>seg[i]){d-=seg[i];i++;}const f=seg[i]?d/seg[i]:0;
+  return [(P[i][0]+(P[i+1][0]-P[i][0])*f),(P[i][1]+(P[i+1][1]-P[i][1])*f)/AY];
+}
 function applyMotion(sk,m,p){
   let dx=0,dy=0;const s=Math.sin,tp=2*Math.PI*p;
   switch(m.t){
-    case 'circle':dx=m.a*s(tp);dy=m.a*(Math.cos(tp)-1);break;     // circular path
+    case 'circle':{const w=envW(p);dx=m.a*s(tp)*w;dy=m.a*(Math.cos(tp)-1)*w;break;}     // circular path
     case 'forward':dx=m.a*eio(p);dy=m.a*.5*eio(p);break;           // linear outward
-    case 'arc':dx=m.a*eio(p);dy=-m.a*.8*s(Math.PI*p);break;        // arc
-    case 'tap':dy=m.a*s(tp);break;
-    case 'wag':dx=m.a*s(3*Math.PI*p);break;
+    case 'arc':dx=m.a*eio(p);dy=-m.a*.8*s(Math.PI*eio(p));break;        // arc
+    case 'tap':dy=m.a*s(tp)*envW(p);break;
+    case 'wag':dx=m.a*s(3*Math.PI*p)*envW(p);break;
+    case 'J':case 'Z':{const q=letterPath(m.t,eio(p));dx=q[0];dy=q[1];break;}
     case 'lift':dy=-m.a*eio(p);break;
     case 'pull':dx=-m.a*eio(p);break;
   }
@@ -1232,6 +1269,24 @@ const Z={temple:[.64,.255,.72,.37],forehead:[.60,.225,.69,.37],mouth:[.555,.31,.
 const HSCUS={'5':{f:[1,1,1,1,1],d:{spread:.95}},FLAT:{f:[1,1,1,1,1],d:{spread:0},to:{x:12,y:-8,a:.12,len:[12,9,7]}},ILY:{f:[1,1,0,0,1],d:{spread:.7}},
  POINT:{f:[0,1,0,0,0],d:{spread:0},to:{x:3,y:-13,a:-1.3}},THUMBUP:{f:[1,0,0,0,0],d:{},to:{x:11,y:-6,a:.22,len:[15,12,10]}},CLAW:{f:[1,1,1,1,1],d:{round:1,spread:.6}}};
 const ORI={f:{},u:{},b:{back:true},d:{back:true},s:{sx:.55}};
+/* ── Arm solver: shoulder + wrist target → natural elbow, with fixed upper-arm / forearm length ── */
+const AY=1.2576,ARM={L1:.2,L2:.185},ARMPREV={R:null,L:null};
+function solveArms(sk,fresh){
+  ['R','L'].forEach(side=>{
+    const sh=sk['s'+side],w=sk['w'+side],L1=ARM.L1,L2=ARM.L2,sgn=side==='R'?1:-1;
+    let dx=w.x-sh.x,dy=(w.y-sh.y)*AY,d=Math.hypot(dx,dy);
+    if(d<1e-6){dx=0;dy=.1;d=.1;}
+    const mn=Math.abs(L1-L2)+.012,mx=L1+L2-.004,dc=Math.min(mx,Math.max(mn,d)),ux=dx/d,uy=dy/d;
+    if(dc!==d){w.x=sh.x+ux*dc;w.y=(sh.y*AY+uy*dc)/AY;}               // keep the hand reachable
+    const a=(L1*L1-L2*L2+dc*dc)/(2*dc),h=Math.sqrt(Math.max(0,L1*L1-a*a)),bx=sh.x+ux*a,by=sh.y*AY+uy*a;
+    const c1={x:bx-uy*h,y:by+ux*h},c2={x:bx+uy*h,y:by-ux*h},pv=!fresh&&ARMPREV[side];
+    const score=c=>c.y+.4*(c.x-sh.x)*sgn;                            // natural: elbow low and slightly outward
+    let pick;
+    if(pv){const d1=Math.hypot(c1.x-pv.x,c1.y-pv.y),d2=Math.hypot(c2.x-pv.x,c2.y-pv.y);pick=d1<=d2?c1:c2;}   // stay on the same side as the previous frame
+    else pick=score(c1)>=score(c2)?c1:c2;
+    sk['e'+side]={x:pick.x,y:pick.y/AY};if(!fresh)ARMPREV[side]={x:pick.x,y:pick.y};   // 'fresh' solves (targets) must not disturb the live arm's continuity
+  });
+}
 const SIGNS={};function S(key,how,R,L){SIGNS[key]={how,R,L};}
 S('HELLO','Flat hand at the temple, palm out; sweep it outward like a salute.',['temple','B',-.12,'f',['arc',.07]]);
 S('GOODBYE','Open hand raised, palm out; wave the fingers.',['wave','5',0,'f',['wag',.05]]);
@@ -1315,10 +1370,35 @@ const ALIAS={HI:'HELLO',BYE:'GOODBYE',THANKS:'THANK',THANKYOU:'THANK',I:'ME',MYN
  ALLDONE:'FINISHED',FINISH:'FINISHED',MUM:'MOM',MOTHER:'MOM',FATHER:'DAD',EXCUSEME:'EXCUSE',SHOWME:'SHOW',GOODMORNING:'MORNING',YOUREWELCOME:'WELCOME',YOUAREWELCOME:'WELCOME',THIRST:'THIRSTY',FRIENDS:'FRIEND',WANTS:'WANT',NEEDS:'NEED',LIKES:'LIKE',THINKING:'THINK',KNOW:'UNDERSTAND',UNDERSTOOD:'UNDERSTAND',REMEMBERED:'REMEMBER',LOOK:'SEE',WATCH:'SEE',COMING:'COME',GAVE:'GIVE',TODAY:'NOW',PLAYING:'PLAY',TELEPHONE:'PHONE',CALL:'PHONE',FREEZING:'COLD',HAPPINESS:'HAPPY',MAD:'ANGRY',PRETTY:'BEAUTIFUL'};
 const PHR=[['I','LOVE','YOU'],["YOU'RE",'WELCOME'],['YOU','ARE','WELCOME'],['THANK','YOU'],['MY','NAME'],['ALL','DONE'],['EXCUSE','ME'],['SHOW','ME'],['GOOD','MORNING']];
 function mergePhrases(ws){const out=[];for(let i=0;i<ws.length;){const hit=PHR.find(p=>p.every((x,j)=>ws[i+j]===x));if(hit){out.push(hit.join(' '));i+=hit.length;}else{out.push(ws[i]);i++;}}return out;}
-function restHS(act){return {rot:Math.PI,rotDisp:0,sx:1,spread:.12,back:false,d:{},to:null,key:'',act:!!act};}
+function restHS(act){return {rot:Math.PI,rotDisp:0,sx:1,spread:.12,back:false,d:{},to:null,key:'',act:!!act,dn:{round:0,hook:0,cross:0},tp:null,ia:0};}
 const HSC={R:restHS(false),L:restHS(false)},HST={R:restHS(false),L:restHS(false)};let hsProg=1;
-function stepHS(){['R','L'].forEach(sd=>{const c=HSC[sd],t=HST[sd];c.rot+=(t.rot-c.rot)*.22;c.rotDisp+=(t.rotDisp-c.rotDisp)*.22;c.sx+=(t.sx-c.sx)*.22;c.spread+=(t.spread-c.spread)*.22;
-  if(hsProg>.3){c.back=t.back;c.d=t.d;c.to=t.to;c.key=t.key;c.act=t.act;}});}
+const TO_TAB={A:{x:11,y:-6,a:.22},S:{x:3,y:-13,a:-1.3},E:{x:3,y:-8,a:-1.35},M:{x:4,y:-10,a:-1.3},N:{x:4,y:-10,a:-1.3},T:{x:2,y:-17,a:-1.2},F:{x:9,y:-10,a:-.15,len:[13,10,6]},O:{x:9,y:-10,a:-.3,len:[13,10,6]}};
+function thumbParamsFor(to,key,e0,open){ // numeric description of the thumb so it can be blended instead of snapping
+  const TO=to!==undefined?to:TO_TAB[key];
+  if(TO)return {x:TO.x,y:TO.y,a:TO.a,l0:(TO.len||(key==='A'?[15,12,10]:[9,7,6]))[0],l1:(TO.len||(key==='A'?[15,12,10]:[9,7,6]))[1],l2:(TO.len||(key==='A'?[15,12,10]:[9,7,6]))[2],w:9.6,b0:0,b1:0,b2:0,crease:0,front:1};
+  const tc=1-e0,th=1-.3*tc;
+  return {x:10-tc*7,y:-7-tc*6,a:.9-tc*1.8,l0:14*th,l1:11*th,l2:9*th,w:10.2,b0:.25*tc,b1:.5*tc,b2:.4*tc,crease:open?1:0,front:0};
+}
+const angD=(a,b)=>{let d=(b-a)%(2*Math.PI);if(d>Math.PI)d-=2*Math.PI;if(d<-Math.PI)d+=2*Math.PI;return d;};
+let lastInsetKey='';
+function stepHS(fins){
+  const dt=FDT,k=1-Math.exp(-15*dt),kt=1-Math.exp(-17*dt),ki=1-Math.exp(-10*dt);
+  ['R','L'].forEach(sd=>{
+    const c=HSC[sd],t=HST[sd];
+    c.rot+=angD(c.rot,t.rot)*k;c.rotDisp+=(t.rotDisp-c.rotDisp)*k;c.sx+=(t.sx-c.sx)*k;c.spread+=(t.spread-c.spread)*k;
+    if(hsProg>.3&&t.act){c.back=t.back;c.d=t.d;c.to=t.to;c.key=t.key;}
+    c.act=t.act;
+    // curl-style details blend smoothly instead of switching on
+    ['round','hook','cross'].forEach(n=>{c.dn[n]+=((+(t.d&&t.d[n])||0)-c.dn[n])*k;});
+    // thumb: always blended toward its target shape
+    const f=(fins&&fins[sd])||[1,1,1,1,1],e0=Math.max(0,Math.min(1,Number(f[0]??1))),open=(f[1]+f[2]+f[3]+f[4])>2.5;
+    const g=thumbParamsFor(t.to===null?undefined:t.to,t.key,e0,open);
+    if(!c.tp)c.tp=g;else for(const n in g)c.tp[n]+=(g[n]-c.tp[n])*kt;
+    // inset panel fades in once the new handshape has formed, fades out at rest
+    c.ia+=(((t.act&&hsProg>.3)?1:0)-c.ia)*ki;
+  });
+}
+function handOpts(h){const dn=h.dn||{};return {d:Object.assign({},h.d,{spread:h.spread},h.dn?{round:dn.round,hook:dn.hook,cross:dn.cross}:{}),to:h.to,sx:h.sx,back:h.back,tp:h.tp||undefined};}   // works for live (blended) and static (quiz) hand states
 function buildSpec(key){
   const sp=SIGNS[key];if(sp.built)return sp.built;
   const pose={duration:900,label:key+' · '+sp.how,fingersR:[.75,.7,.65,.6,.55],fingersL:[.75,.7,.65,.6,.55]},hs={R:restHS(false),L:restHS(false)},paths={};
@@ -1332,19 +1412,19 @@ function buildSpec(key){
 function applyPath(sk,side,m,p){
   const [t,a]=m;let dx=0,dy=0;const tp=2*Math.PI*p;
   switch(t){
-    case 'circle':dx=a*Math.sin(tp);dy=a*(Math.cos(tp)-1);break;
+    case 'circle':{const w=envW(p);dx=a*Math.sin(tp)*w;dy=a*(Math.cos(tp)-1)*w;break;}
     case 'forward':dx=a*eio(p);dy=a*.6*eio(p);break;
-    case 'arc':dx=a*eio(p);dy=-a*.8*Math.sin(Math.PI*p);break;
-    case 'tap':dy=a*Math.sin(tp);break;
-    case 'nod':dy=a*Math.sin(2*tp);break;
-    case 'wag':dx=a*Math.sin(2*tp);break;
+    case 'arc':dx=a*eio(p);dy=-a*.8*Math.sin(Math.PI*eio(p));break;
+    case 'tap':dy=a*Math.sin(tp)*envW(p);break;
+    case 'nod':dy=a*Math.sin(2*tp)*envW(p);break;
+    case 'wag':dx=a*Math.sin(2*tp)*envW(p);break;
     case 'lift':dy=-a*eio(p);break;
     case 'down':dy=a*eio(p);break;
-    case 'chop':dy=a*Math.sin(Math.PI*p);break;
+    case 'chop':dy=a*Math.sin(Math.PI*eio(p));break;
     case 'pull':dx=-a*eio(p);break;
     case 'outward':dx=a*eio(p);break;
-    case 'inward':dx=-a*Math.abs(Math.sin(Math.PI*p*2));break;
-    case 'tapMouth':dy=-a*Math.abs(Math.sin(Math.PI*p*2));break;
+    case 'inward':dx=-a*Math.abs(Math.sin(Math.PI*p*2))*envW(p);break;
+    case 'tapMouth':dy=-a*Math.abs(Math.sin(Math.PI*p*2))*envW(p);break;
   }
   const f=side==='L'?-1:1;sk['w'+side].x+=dx*f;sk['w'+side].y+=dy;sk['e'+side].x+=dx*f*.5;sk['e'+side].y+=dy*.5;
 }
@@ -1359,6 +1439,39 @@ const _nmmFor=nmmFor;nmmFor=function(key,isWord,last){const n=_nmmFor(key,isWord
   if(['SORRY','SAD','PAIN','SICK','UPSET','TIRED','CONFUSED'].includes(key)){n.smile=-.8;n.brow=-.5;n.tilt=.1;}
   if(['ILY','FAMILY','WELCOME','EXCITED','GOOD','MORNING','LOVE'].includes(key)){n.smile=.8;n.brow=Math.max(n.brow,.3);}
   return n;};
+/* ── Motion guide: dotted path + arrow showing where the hand is about to travel ── */
+let GUIDE=null;
+const OSC_T=['tap','nod','wag','tapMouth','inward','chop'];
+function buildGuide(){
+  GUIDE=null;if(!(sigOpts.paths||sigOpts.motion))return;
+  const mk=()=>({wR:{...tgtSk.wR},eR:{...tgtSk.eR},wL:{...tgtSk.wL},eL:{...tgtSk.eL}}),out={sides:{}};
+  const run=(side,fn,type)=>{const pts=[];for(let i=0;i<=32;i++){const t=mk();fn(t,i/32);pts.push({x:t['w'+side].x,y:t['w'+side].y});}
+    let len=0;for(let i=1;i<pts.length;i++)len+=Math.hypot(pts[i].x-pts[i-1].x,(pts[i].y-pts[i-1].y)*AY);
+    if(len>.035)out.sides[side]={pts,type,len};};
+  if(sigOpts.paths)['R','L'].forEach(sd=>{const m=sigOpts.paths[sd];if(m)run(sd,(t,p)=>applyPath(t,sd,m,p),m[0]);});
+  else{const m=sigOpts.motion;(m.b?['R','L']:['R']).forEach(sd=>run(sd,(t,p)=>applyMotion(t,m,p),m.t));}
+  if(Object.keys(out.sides).length)GUIDE=out;
+}
+function drawGuide(c,W,H2,a){
+  if(!GUIDE||a<.02)return;
+  Object.keys(GUIDE.sides).forEach(side=>{
+    const g=GUIDE.sides[side],h=HSC[side],letter=currentSignKey==='J'||currentSignKey==='Z',off=W*(letter?.075:.03),ox=Math.sin(h.rot)*off,oy=-Math.cos(h.rot)*off;
+    const pts=g.pts.map(q=>({x:q.x*W+ox,y:q.y*H2+oy}));
+    c.save();c.globalAlpha=a;c.lineCap='round';c.lineJoin='round';c.strokeStyle='#5c6fb3';c.fillStyle='#5c6fb3';c.lineWidth=W*.0065;c.setLineDash([W*.012,W*.011]);
+    const head=(p0,p1)=>{const ang=Math.atan2(p1.y-p0.y,p1.x-p0.x),L=W*.024;c.setLineDash([]);c.beginPath();c.moveTo(p1.x,p1.y);c.lineTo(p1.x-L*Math.cos(ang-.45),p1.y-L*Math.sin(ang-.45));c.lineTo(p1.x-L*Math.cos(ang+.45),p1.y-L*Math.sin(ang+.45));c.closePath();c.fill();};
+    if(OSC_T.includes(g.type)){ // back-and-forth: a short two-headed arrow along the main axis
+      let lo=pts[0],hi=pts[0],bi=0;pts.forEach(q=>{if(q.y<lo.y)lo=q;if(q.y>hi.y)hi=q;});
+      let xl=pts[0],xh=pts[0];pts.forEach(q=>{if(q.x<xl.x)xl=q;if(q.x>xh.x)xh=q;});
+      const vert=(hi.y-lo.y)>=(xh.x-xl.x),A=vert?lo:xl,B=vert?hi:xh;
+      c.beginPath();c.moveTo(A.x,A.y);c.lineTo(B.x,B.y);c.stroke();head(B,A);head(A,B);
+    }else{
+      c.beginPath();pts.forEach((q,i)=>i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y));c.stroke();
+      let j=pts.length-2;while(j>0&&Math.hypot(pts[pts.length-1].x-pts[j].x,pts[pts.length-1].y-pts[j].y)<W*.012)j--;
+      head(pts[j],pts[pts.length-1]);
+    }
+    c.restore();
+  });
+}
 function startSignAnim(w,pose,dur,cb,o){
   o=o||{};
   currentSignKey=String(w).toUpperCase();currentSignStart=performance.now();holdPoseFlag=true;
@@ -1368,12 +1481,18 @@ function startSignAnim(w,pose,dur,cb,o){
     if(full[k])Object.assign(full[k],pose[k]);
   });
   ['wL','wR','eL','eR'].forEach(k=>{full[k].x=Math.min(.9,Math.max(.1,full[k].x));full[k].y=Math.min(.6,full[k].y);}); // keep hands inside the frame
+  solveArms(full,true);                              // natural elbows for the target pose
   tgtSk=full;
   tgtFin.L=pose.fingersL||[1,1,1,1,1];
   tgtFin.R=pose.fingersR||[1,1,1,1,1];
   HST.R=(o.hs&&o.hs.R)||letterHS(currentSignKey,'R');HST.L=(o.hs&&o.hs.L)||letterHS(currentSignKey,'L');
   fromSk=clone(curSk);fromFin={L:[...curFin.L],R:[...curFin.R]};
   sigOpts={move:o.move||dur,motion:o.motion||null,paths:o.paths||null,motDur:o.motDur||0,hold:o.hold||0,pulse:o.pulse||0};
+  if(sigOpts.paths||(sigOpts.motion&&o.hs===undefined&&!(sigOpts.motion&&(sigOpts.motion.t==='J'||sigOpts.motion.t==='Z')))){ // longer reaches take a little longer, short ones a little less
+    const tr=Math.max(...['wL','wR'].map(k=>Math.hypot(fromSk[k].x-full[k].x,(fromSk[k].y-full[k].y)*AY)));
+    sigOpts.move*=Math.max(.9,Math.min(1.2,.82+tr*1.4));
+  }
+  buildGuide();
   nmmT=o.nmm||{...NMM0};
   animStart=performance.now();animDur=sigOpts.move+sigOpts.motDur+sigOpts.hold;animCb=cb;
 }
@@ -1797,20 +1916,19 @@ function clHand(c,cx,cy,k,fins,side,key,rot0,o){
   c.fillStyle=CL_SKIN;c.fill();c.strokeStyle=CL_EDGE;c.lineWidth=1.8;c.stroke();
   const open=ext(1)+ext(2)+ext(3)+ext(4)>2.5;
   if(open&&!CL_BACK){c.strokeStyle='#e39a78';c.lineWidth=1.1;c.beginPath();c.moveTo(sgn*10,-14);c.quadraticCurveTo(sgn*2,-9,-sgn*8,-17);c.moveTo(sgn*7,-24);c.quadraticCurveTo(0,-19,-sgn*9,-26);c.stroke();}
-  const tc=1-ext(0),TO=o.to!==undefined?o.to:{A:{x:11,y:-6,a:.22},S:{x:3,y:-13,a:-1.3},E:{x:3,y:-8,a:-1.35},M:{x:4,y:-10,a:-1.3},N:{x:4,y:-10,a:-1.3},T:{x:2,y:-17,a:-1.2},F:{x:9,y:-10,a:-.15,len:[13,10,6]},O:{x:9,y:-10,a:-.3,len:[13,10,6]}}[key];
-  const th=1-.3*tc,thumb=()=>TO?clFinger(c,sgn*TO.x,TO.y,sgn*TO.a,TO.len||(key==='A'?[15,12,10]:[9,7,6]),9.6,[0,0,0],false,CL_HUES[0]):clFinger(c,sgn*(10-tc*7),-7-tc*6,sgn*(.9-tc*1.8),[14*th,11*th,9*th],10.2,[.25*tc,.5*tc,.4*tc],open,CL_HUES[0]);
+  const TP=o.tp||thumbParamsFor(o.to,key,ext(0),open),thumb=()=>clFinger(c,sgn*TP.x,TP.y,sgn*TP.a,[TP.l0,TP.l1,TP.l2],TP.w,[TP.b0,TP.b1,TP.b2],TP.crease>.5,CL_HUES[0]),front=TP.front>.5;
   c.fillStyle=CL_SKIN;c.beginPath();c.ellipse(sgn*11.5,-7,6.5,11,sgn*.35,0,Math.PI*2);c.fill();
-  if(!TO)thumb();
+  if(!front)thumb();
   const BX=[10.5,3.5,-3.5,-10],BY=[-30,-32,-30,-26],LN=[[20,14,11],[22,15,12],[20,14,11],[15,11,9]],WD=[8.6,9,8.6,7.4];
-  const kf=Math.max(-.25,.05+(d.spread||0)*.26);
+  const kf=Math.max(-.25,.05+(d.spread||0)*.26),rd=+d.round||0,hk=+d.hook||0,cr=+d.cross||0;
   [3,2,1,0].forEach(q=>{
     const i=q+1;let curl=1-ext(i),bn=[.6,1.55,1.25];
-    if(d.round){curl=Math.max(curl,.85);bn=[.55,1.05,.9];}
-    if(d.hook&&i===1)curl=Math.max(curl,.9);
-    const a0=sgn*(2.5-i)*kf+(d.cross&&i===1?sgn*.3:0)+(d.cross&&i===2?-sgn*.3:0);
+    if(rd>0){curl+=(Math.max(curl,.85)-curl)*rd;bn=bn.map((v,j)=>v+([.55,1.05,.9][j]-v)*rd);}
+    if(hk>0&&i===1)curl+=(Math.max(curl,.9)-curl)*hk;
+    const a0=sgn*(2.5-i)*kf+(i===1?sgn*.3*cr:0)+(i===2?-sgn*.3*cr:0);
     clFinger(c,sgn*BX[q],BY[q],a0,LN[q],WD[q],bn.map(v=>v*curl),curl<.5,CL_HUES[i]);
   });
-  if(TO)thumb();
+  if(front)thumb();
   c.restore();CL_BACK=false;
 }
 const _oc=document.createElement('canvas');_oc.width=_oc.height=360;const _ox=_oc.getContext('2d',{willReadFrequently:true});
@@ -1821,16 +1939,17 @@ function handBounds(fins,side,key,o){
   return x1<x0?{cx:180,cy:180,w:100,h:100}:{cx:(x0+x1)/2,cy:(y0+y1)/2,w:x1-x0+10,h:y1-y0+10};
 }
 function handInset(c,W,H,fins,side,x0){
-  const key=currentSignKey||'',h=HSC[side];
-  if(!key||!h.act)return;                              // only show hands that are actually signing
-  const both=HSC.L.act&&HSC.R.act,pw=W*(both?.30:.36),ph=H*.42,y0=H-ph-W*.025,r=W*.03;if(!both)x0=W*.03;
-  c.save();c.beginPath();c.roundRect?c.roundRect(x0,y0,pw,ph,r):c.rect(x0,y0,pw,ph);
+  if(currentSignKey)lastInsetKey=currentSignKey;
+  const key=currentSignKey||lastInsetKey,h=HSC[side];
+  if(!key||h.ia<.03)return;                            // only show hands that are actually signing (fades in/out)
+  const both=HSC.L.ia>.5&&HSC.R.ia>.5,pw=W*(both?.30:.36),ph=H*.42,y0=H-ph-W*.025,r=W*.03;if(!both)x0=W*.03;
+  c.save();c.globalAlpha=Math.min(1,h.ia);c.beginPath();c.roundRect?c.roundRect(x0,y0,pw,ph,r):c.rect(x0,y0,pw,ph);
   c.shadowColor='rgba(43,36,80,.16)';c.shadowBlur=14;c.shadowOffsetY=3;c.fillStyle=DARK?'#26254a':'#fffdf6';c.fill();c.shadowBlur=0;c.shadowOffsetY=0;
   c.strokeStyle=DARK?'#3f3e72':'#eadfc8';c.lineWidth=1.4;c.stroke();c.clip();
   c.fillStyle=DARK?'#2f2e5a':'#f6efdc';c.fillRect(x0,y0,pw,W*.05);
   c.fillStyle=DARK?'#b5c2ff':'#4c5ea0';c.font='700 '+Math.round(W*.019)+'px system-ui,sans-serif';c.textAlign='left';
   c.fillText((key.length===1?'HANDSHAPE':(both?(side==='L'?'LEFT':'RIGHT')+' HAND':'HANDSHAPE'))+' · '+key,x0+W*.02,y0+W*.033);
-  const o={d:Object.assign({},h.d,{spread:h.spread}),to:h.to,sx:h.sx,back:h.back,rot:h.rotDisp};
+  const o=Object.assign(handOpts(h),{rot:h.rotDisp});
   CL_TIPS=true;const B=handBounds(fins,side,h.key,o),k=Math.min(pw*.8/B.w,(ph-W*.12)/B.h,3.6),pcx=x0+pw/2,pcy=y0+W*.055+(ph-W*.12)/2;
   clHand(c,pcx-k*(B.cx-180),pcy-k*(B.cy-180),k,fins,side,h.key,h.rotDisp,o);CL_TIPS=false;
   const lab=['T','I','M','R','P'],rr=W*.0125,gap=pw/6;
@@ -1893,8 +2012,8 @@ function flHead(c,x,y,hr,n,now){
   [-1,1].forEach(sd=>{const se=hs==='bob'?1.15:2.15,m=se/2.15;c.beginPath();c.moveTo(sd*.98,.2);c.bezierCurveTo(sd*1.2,.9*m+.1,sd*1.25,1.6*m,sd*1.15,se);c.bezierCurveTo(sd*1.0,1.5*m,sd*.92,.9*m+.1,sd*.86,.45);c.closePath();c.fillStyle=FL.hair;c.fill();});}
   c.restore();
 }
-function drawFlat(sk,fins){
-  const W=avatarCanvas.width,Hc=avatarCanvas.height,H2=Hc/.66,c=ctx2,now=performance.now()/1000,n=nmm;
+function drawFlat(sk,fins,T){
+  const W=T?T.W:avatarCanvas.width,Hc=T?T.H:avatarCanvas.height,H2=Hc/.66,c=T?T.c:ctx2,now=performance.now()/1000,n=(T&&T.n)||nmm,HS=T?T.hs:HSC;
   c.clearRect(0,0,W,Hc);c.fillStyle=DARK?'#1f1e3a':'#fdf8e8';c.fillRect(0,0,W,Hc);
   c.fillStyle=DARK?'#302e5c':'#f3e9d6';c.beginPath();c.arc(W/2,Hc*.52,Math.min(W,Hc)*.47,0,Math.PI*2);c.fill();
   c.save();c.translate(0,W*.085);
@@ -1921,10 +2040,11 @@ function drawFlat(sk,fins){
     const dx=e.x-s0.x,dy=e.y-s0.y,m={x:s0.x+dx*.45,y:s0.y+dy*.45};
     limb(s0,m,W*.104,FL.sleeve,'butt');c.beginPath();c.arc(s0.x,s0.y,W*.052,0,Math.PI*2);c.fillStyle=FL.sleeve;c.fill();
   });
-  [['L',wl,fins.L],['R',wr,fins.R]].forEach(([side,w,f])=>{const h=HSC[side];clHand(c,w.x,w.y,W*.0022*(1+handPulse),f,side,h.key,h.rot,{d:Object.assign({},h.d,{spread:h.spread}),to:h.to,sx:h.sx,back:h.back});});
+  if(!T)drawGuide(c,W,H2,GUIDE_A);
+  [['L',wl,fins.L],['R',wr,fins.R]].forEach(([side,w,f])=>{const h=HS[side];clHand(c,w.x,w.y,W*.0022*(1+handPulse),f,side,h.key,h.rot,handOpts(h));});
   c.restore();
 }
-function drawSkeleton(sk,fins){stepHS();drawFlat(sk,fins);handInset(ctx2,avatarCanvas.width,avatarCanvas.height,fins.L,'L',avatarCanvas.width*.03);handInset(ctx2,avatarCanvas.width,avatarCanvas.height,fins.R,'R',avatarCanvas.width*.67);}
+function drawSkeleton(sk,fins){stepHS(fins);drawFlat(sk,fins);handInset(ctx2,avatarCanvas.width,avatarCanvas.height,fins.L,'L',avatarCanvas.width*.03);handInset(ctx2,avatarCanvas.width,avatarCanvas.height,fins.R,'R',avatarCanvas.width*.67);}
 
 
 /* ─── IDLE BREATH ─── */
@@ -1942,27 +2062,34 @@ function idleSk(t){
 }
 
 /* ─── RAF LOOP ─── */
+let lastTs=0,GUIDE_A=0;
 function frame(ts){
   requestAnimationFrame(frame);hsProg=1;
-  idleT+=.016;
-  for(const k in nmm)nmm[k]+=(nmmT[k]-nmm[k])*.12;
+  FDT=Math.min(.05,Math.max(.002,(ts-(lastTs||ts-16.7))/1000));lastTs=ts;
+  idleT+=FDT;
+  const kn=1-Math.exp(-8*FDT);for(const k in nmm)nmm[k]+=(nmmT[k]-nmm[k])*kn;
+  GUIDE_A=0;
   if(animCb){
-    const el=ts-animStart,mv=sigOpts.move,rawT=Math.min(el/mv,1),t=eio(rawT);hsProg=rawT;
+    const el=ts-animStart,mv=sigOpts.move,rawT=Math.min(el/mv,1),t=eio(rawT),tf=eio(Math.min(1,rawT/.85));hsProg=rawT;  // fingers finish forming just before the hand arrives
     Object.keys(BASE).forEach(k=>{
       if(!fromSk[k]||!tgtSk[k])return;
       curSk[k]={};
       Object.keys(fromSk[k]).forEach(p=>{curSk[k][p]=lerp(fromSk[k][p],tgtSk[k][p],t);});
     });
-    ['L','R'].forEach(s=>{curFin[s]=fromFin[s].map((v,i)=>lerp(v,tgtFin[s][i],t));});
+    ['L','R'].forEach(s=>{curFin[s]=fromFin[s].map((v,i)=>lerp(v,tgtFin[s][i],tf));});
     if(sigOpts.motion&&sigOpts.motDur)applyMotion(curSk,sigOpts.motion,Math.min(Math.max((el-mv)/sigOpts.motDur,0),1));
     if(sigOpts.paths&&sigOpts.motDur){const pp=Math.min(Math.max((el-mv)/sigOpts.motDur,0),1);['R','L'].forEach(sd=>{if(sigOpts.paths[sd])applyPath(curSk,sd,sigOpts.paths[sd],pp);});}
+    solveArms(curSk);
     handPulse=sigOpts.pulse*Math.sin(Math.PI*rawT);   // forward pulse marks each letter/word boundary
+    if(GUIDE){const mo=el-mv;GUIDE_A=.75*(el<mv?sst(.5,1,rawT):(mo<sigOpts.motDur?1:1-sst(0,1,(mo-sigOpts.motDur)/Math.max(160,sigOpts.hold))));}
     drawSkeleton(curSk,curFin);
-    if(el>=animDur){handPulse=0;const cb=animCb;animCb=null;cb();}   // hold (0.15-0.25s) is the tail of animDur
+    if(el>=animDur){handPulse=0;const cb=animCb;animCb=null;cb();}   // hold is the tail of animDur
   } else if(holdPoseFlag){
     handPulse=0;drawSkeleton(curSk,curFin);
   } else {
-    curSk=idleSk(idleT);drawSkeleton(curSk,curFin);
+    const tg=idleSk(idleT),ki=1-Math.exp(-5*FDT);          // ease into the idle breathing pose (no pop when a phrase ends)
+    Object.keys(tg).forEach(k=>{if(!curSk[k]||typeof tg[k]!=='object'){curSk[k]=tg[k];return;}Object.keys(tg[k]).forEach(q=>{if(typeof tg[k][q]==='number')curSk[k][q]+=(tg[k][q]-curSk[k][q])*ki;else curSk[k][q]=tg[k][q];});});
+    solveArms(curSk);drawSkeleton(curSk,curFin);
   }
 }
 requestAnimationFrame(frame);
@@ -2602,12 +2729,38 @@ window.AuraUser=(function(){
   function saveProfile(p){jset(K('profile'),p);}
   function summary(){const c=ctx(),un=Object.keys(c.s.unlocked).length,x=xp(c,un),l=lvl(x),base=(l-1)*(l-1)*40,next=l*l*40;
     return {c,un,xp:x,level:l,pct:Math.round((x-base)/(next-base)*100),toNext:next-x,streak:streak(c.s)};}
-  return {track,touch,check,toast,learned,saveLearned,profile,saveProfile,summary,adoptGuest,DEFS,words,letters,today};
+  return {key:n=>K(n),track,touch,check,toast,learned,saveLearned,profile,saveProfile,summary,adoptGuest,DEFS,words,letters,today};
 })();
+
+function drawArrowHead(c,x,y,ang,sz){c.beginPath();c.moveTo(x,y);c.lineTo(x-Math.cos(ang-.45)*sz,y-Math.sin(ang-.45)*sz);c.lineTo(x-Math.cos(ang+.45)*sz,y-Math.sin(ang+.45)*sz);c.closePath();c.fill();}
+function motionArrow(c,x,y,t,side,W){
+  const L=W*.13,f=side==='L'?-1:1,sz=W*.03;c.save();c.strokeStyle=c.fillStyle='#e0684a';c.lineWidth=W*.012;c.lineCap='round';c.lineJoin='round';
+  const line=(x1,y1,x2,y2)=>{c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();drawArrowHead(c,x2,y2,Math.atan2(y2-y1,x2-x1),sz);};
+  const dbl=(x1,y1,x2,y2)=>{c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();drawArrowHead(c,x2,y2,Math.atan2(y2-y1,x2-x1),sz);drawArrowHead(c,x1,y1,Math.atan2(y1-y2,x1-x2),sz);};
+  if(t==='circle'){const r=L*.45;c.beginPath();c.arc(x,y,r,-Math.PI*.2,Math.PI*1.35);c.stroke();const a=Math.PI*1.35;drawArrowHead(c,x+Math.cos(a)*r,y+Math.sin(a)*r,a+Math.PI/2,sz);}
+  else if(t==='arc'){c.beginPath();c.moveTo(x,y);c.quadraticCurveTo(x+f*L*.5,y-L*.75,x+f*L,y);c.stroke();drawArrowHead(c,x+f*L,y,Math.atan2(L*.75,f*L*.5),sz);}
+  else if(t==='forward')line(x,y,x+f*L*.75,y+L*.7);
+  else if(t==='down'||t==='chop')line(x,y-L*.2,x,y+L*.9);
+  else if(t==='lift')line(x,y+L*.2,x,y-L*.9);
+  else if(t==='pull'||t==='inward')line(x+f*L*.5,y,x-f*L*.5,y);
+  else if(t==='outward')line(x-f*L*.3,y,x+f*L*.9,y);
+  else if(t==='wag')dbl(x-L*.7,y,x+L*.7,y);
+  else dbl(x,y-L*.45,x,y+L*.45);
+  c.restore();
+}
+function poseFrame(cv,key,withArrow){
+  const b=buildSpec(key),sk=clone(BASE),c=cv.getContext('2d');
+  ['wR','eR','wL','eL'].forEach(k=>{if(b.pose[k])Object.assign(sk[k],b.pose[k]);});
+  solveArms(sk,true);                                   // natural, constant-length arms in the quiz stills too
+  const fins={L:b.pose.fingersL,R:b.pose.fingersR},n=Object.assign({},NMM0,nmmFor(key,true,false),{talk:0}),hs={R:b.hs.R,L:b.hs.L};
+  const hp=handPulse;handPulse=0;drawFlat(sk,fins,{W:cv.width,H:cv.height,c,n,hs});handPulse=hp;
+  if(withArrow){const side=b.paths.R?'R':(b.paths.L?'L':null);if(side){const W=cv.width,H2=cv.height/.66,P=px(sk,'w'+side,W,H2),f=side==='L'?-1:1;
+    motionArrow(c,P.x+f*W*.1,P.y+W*.085-W*.1,b.paths[side][0],side,W);}}
+}
 /* ═══ Learn section: categorised dictionary, alphabet, detail view, progress ═══ */
 (function(){
   const CAT=window.LN_CAT;
-  const COL={Basics:'#5c6fb3',Questions:'#c0824a','Feelings & health':'#c4627d','Daily life':'#3f9a86','Family & home':'#8a6cc0',Alphabet:'#5c6fb3'};
+  const COL={Basics:'#5c6fb3',Questions:'#c0824a','Feelings & health':'#c4627d','Daily life':'#3f9a86','Family & home':'#8a6cc0',Alphabet:'#5c6fb3','Actions & thinking':'#d0893f','People, time & feelings':'#3d88b5'};
   const NAMEOF={THANK:'Thank you',ILY:'I love you',ME:'Me / I',MY:'My',NAME:'Name',BATHROOM:'Bathroom',FINISHED:'Finished / All done',SHOW:'Show me',EXCUSE:'Excuse me',EAT:'Eat / Food',MORNING:'Good morning',WELCOME:"You're welcome",QUESTION:'Question'};
   const ZL={temple:'Temple',forehead:'Forehead',mouth:'Mouth',chin:'Chin',throat:'Throat',chest:'Chest',crossR:'Chest (crossed arms)',neutral:'Space in front of you',wave:'Beside the head',overL:'Above your other hand',wristL:'Your other wrist',prayR:'Centre of chest'};
   const PL={arc:'Arc outward',wag:'Side to side',tap:'Small tap',nod:'Up and down',lift:'Lift upward',down:'Move downward',chop:'Chop down',pull:'Pull toward you',outward:'Move outward',inward:'Bring together',tapMouth:'Tap toward the mouth',circle:'Small circle',forward:'Move forward'};
@@ -2709,7 +2862,7 @@ window.AuraUser=(function(){
     return el;
   }
   function render(){
-    const body=$('lnBody');body.innerHTML='';const quiz=tab==='quiz',term=q.trim().toLowerCase();let n=0;
+    const body=$('lnBody');body.innerHTML='';const quiz=tab==='quiz',term=q.trim().toLowerCase();let n=0;document.querySelector('.ln-hero').style.display=quiz?'none':'';
     $('lnTools').style.display=quiz?'none':'';$('lnSortL').style.display=tab==='dict'?'':'none';$('lnSearch').parentNode.style.display=quiz?'none':'';document.querySelector('.ln-prog').style.display=quiz?'none':'';
     if(quiz){$('lnEmpty').hidden=true;stats();quizStart();return;}
     const alpha=tab==='alpha',ok=k=>show==='all'||(show==='done')===learned.has(idOf(k,alpha));
@@ -2732,8 +2885,6 @@ window.AuraUser=(function(){
   /* ── Quiz ── */
   const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
   const LET='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  const qTitle=it=>it.alpha?'Letter '+it.k:title(it.k);
-  function pool(topic){return topic==='alpha'?LET.map(k=>({k,alpha:true})):(topic==='all'?Object.keys(SIGNS):CAT[topic].filter(k=>SIGNS[k])).map(k=>({k,alpha:false}));}
   const CLEAN={};
   function cleanImg(el,k){ // quiz photos: remove the printed letter so it doesn't give the answer away
     const src=ASL_REFERENCE_PHOTOS[k]||'';if(CLEAN[k]){el.src=CLEAN[k];return;}el.src=src;
@@ -2742,49 +2893,65 @@ window.AuraUser=(function(){
       for(let i=0;i<a.length;i+=4){const r=a[i],g=a[i+1],b=a[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx<242&&mx-mn<26){a[i]=a[i+1]=a[i+2]=255;}}
       c.putImageData(d,0,0);CLEAN[k]=cv.toDataURL('image/jpeg',.9);el.src=CLEAN[k];}catch(e){}};im.src=src;
   }
+  const qTitle=it=>it.alpha?'Letter '+it.k:title(it.k);
+  const TOPIC=t=>t==='all'?'All signs':t==='alpha'?'Alphabet':t;
+  const jg=(k,d)=>{try{const v=JSON.parse(STORE.get(k)||'null');return v===null?d:v;}catch(e){return d;}};
+  const qlogKey=()=>AuraUser.key('qlog'),qseenKey=()=>AuraUser.key('qseen');
+  function pool(topic){return topic==='alpha'?LET.map(k=>({k,alpha:true})):(topic==='all'?Object.keys(SIGNS):CAT[topic].filter(k=>SIGNS[k])).map(k=>({k,alpha:false}));}
   function stopTimer(){clearInterval(QZ.timer);QZ.timer=null;}
+  const sketch=(el,k,w)=>{const cv=document.createElement('canvas');cv.width=w;cv.height=Math.round(w*.83);el.appendChild(cv);poseFrame(cv,k,true);return cv;};
+  /* start screen: presets, builder and progress dashboard */
   function quizStart(){
-    stopTimer();const body=$('lnBody'),c=QZ.cfg,best=AuraUser.summary().c.s.bestQuiz||0;
-    body.innerHTML='<div class="qz"><div class="qz-start"><span class="ln-eyebrow">Practice quiz</span><h2>Test your skills</h2><p>Recognise signs from their handshape, or pick the right sign for a word. Choose a topic and see how many you get right.</p>'+
-     '<div class="qz-cfg"><label>Topic<select id="qzTopic"><option value="all">All signs</option>'+Object.keys(CAT).map(k=>'<option>'+k+'</option>').join('')+'<option value="alpha">Alphabet</option></select></label>'+
-     '<label>Questions<select id="qzN"><option>5</option><option>10</option><option>15</option></select></label>'+
-     '<label>Question type<select id="qzType"><option value="mix">Mixed</option><option value="name">Name the sign</option><option value="pick">Pick the sign</option></select></label></div>'+
-     '<label class="qz-timed"><input type="checkbox" id="qzTimed"> Timed challenge (20 seconds per question)</label><button type="button" class="qz-go" id="qzGo">Start quiz</button>'+(best?'<div class="qz-best">Your best score: '+best+'%</div>':'')+'</div></div>';
+    stopTimer();const body=$('lnBody'),c=QZ.cfg,log=jg(qlogKey(),[]),sum=AuraUser.summary().c.s;
+    const taken=log.length,acc=log.length?Math.round(log.reduce((a,x)=>a+x.score,0)/log.reduce((a,x)=>a+x.total,0)*100):0;
+    const rec=log.slice(-5).reverse().map(x=>'<li><span>'+TOPIC(x.topic)+'</span><b>'+Math.round(x.score/x.total*100)+'%</b><small>'+new Date(x.t).toLocaleDateString()+'</small></li>').join('')||'<li class="none">No attempts yet — take your first quiz.</li>';
+    body.innerHTML='<div class="qx"><div class="qx-hero"><div><span class="ln-eyebrow">Quiz</span><h1>Test your signing knowledge</h1><p>Every quiz draws a fresh set of signs, favouring ones you have not seen recently. Recognise the sign from the illustration, pick the right hands for a word, or match a description.</p></div></div>'+
+      '<div class="qx-grid"><div class="qx-card"><h3>Quick start</h3><div class="qx-pre" id="qxPre"></div><h3 style="margin-top:1.2rem">Build your own</h3>'+
+      '<div class="qx-cfg"><label>Topic<select id="qzTopic"><option value="all">All signs</option>'+Object.keys(CAT).map(k=>'<option>'+k+'</option>').join('')+'<option value="alpha">Alphabet</option></select></label>'+
+      '<label>Questions<select id="qzN"><option>5</option><option>10</option><option>15</option><option>20</option></select></label>'+
+      '<label>Question type<select id="qzType"><option value="mix">Mixed</option><option value="name">Name the sign</option><option value="pick">Pick the sign</option><option value="read">Match the description</option></select></label></div>'+
+      '<label class="qx-timed"><input type="checkbox" id="qzTimed"> Timed challenge · 20 seconds per question</label><button type="button" class="qz-go" id="qzGo">Start quiz</button></div>'+
+      '<div class="qx-card"><h3>Your progress</h3><div class="qx-kpi"><div><b>'+(sum.bestQuiz||0)+'%</b><span>Best score</span></div><div><b>'+taken+'</b><span>Quizzes</span></div><div><b>'+(taken?acc+'%':'–')+'</b><span>Accuracy</span></div></div><h3 style="margin-top:1.2rem">Recent attempts</h3><ul class="qx-rec">'+rec+'</ul></div></div></div>';
     $('qzTopic').value=c.topic;$('qzN').value=String(c.n);$('qzType').value=c.type;$('qzTimed').checked=c.timed;
+    const pre=$('qxPre');[['Quick 5','5 mixed questions',{topic:'all',n:5,type:'mix',timed:false}],['Standard 10','10 mixed questions',{topic:'all',n:10,type:'mix',timed:false}],['Timed challenge','15 questions · 20s each',{topic:'all',n:15,type:'mix',timed:true}],['Alphabet drill','10 letters',{topic:'alpha',n:10,type:'mix',timed:false}]]
+      .forEach(([t,d,cfg])=>{const b=document.createElement('button');b.type='button';b.innerHTML='<b>'+t+'</b><span>'+d+'</span>';b.onclick=()=>{QZ.cfg=cfg;quizBegin();};pre.appendChild(b);});
     $('qzGo').onclick=()=>{QZ.cfg={topic:$('qzTopic').value,n:+$('qzN').value,type:$('qzType').value,timed:$('qzTimed').checked};quizBegin();};
   }
   function quizBegin(){
-    const {topic,n,type}=QZ.cfg,items=pool(topic);
-    const qs=shuffle(items.slice()).slice(0,Math.min(n,items.length)).map(it=>{
-      const same=items.filter(x=>x.k!==it.k&&(it.alpha||cat(x.k)===cat(it.k))),others=shuffle((same.length>=3?same:items.filter(x=>x.k!==it.k)).slice()).slice(0,3),opts=shuffle([it,...others]);
-      return {it,kind:type==='mix'?(Math.random()<.5?'name':'pick'):type,opts,ans:opts.findIndex(o=>o.k===it.k)};});
-    QZ.run={qs,i:0,score:0,pts:0,streak:0,bestStreak:0,miss:[],t0:Date.now(),done:false,hint:false};quizQ();
+    const {topic,n,type}=QZ.cfg,items=pool(topic),seen=jg(qseenKey(),{}),now=Date.now();
+    const chosen=items.map(it=>({it,w:(seen[it.k]||0)+Math.random()*3.6e6})).sort((a,b)=>a.w-b.w).slice(0,Math.min(n,items.length)).map(x=>x.it);
+    shuffle(chosen).forEach(it=>{seen[it.k]=now;});try{STORE.set(qseenKey(),JSON.stringify(seen));}catch(e){}
+    const kinds=topic==='alpha'?['name','pick']:['name','pick','read'];
+    const qs=chosen.map(it=>{
+      const same=items.filter(x=>x.k!==it.k&&(it.alpha||cat(x.k)===cat(it.k))),pool2=same.length>=3?same:items.filter(x=>x.k!==it.k),others=shuffle(pool2.slice()).slice(0,3),opts=shuffle([it,...others]);
+      const kind=type==='mix'?kinds[Math.floor(Math.random()*kinds.length)]:(type==='read'&&it.alpha?'name':type);
+      return {it,kind,opts,ans:opts.findIndex(o=>o.k===it.k)};});
+    QZ.run={qs,i:0,score:0,pts:0,streak:0,bestStreak:0,miss:[],res:[],t0:Date.now(),done:false,hint:false};quizQ();
   }
   function quizQ(){
     stopTimer();const r=QZ.run,qn=r.qs[r.i],it=qn.it,body=$('lnBody'),timed=QZ.cfg.timed;r.done=false;r.hint=false;
-    const f=it.alpha?null:facts(it.k);
-    body.innerHTML='<div class="qz"><div class="qz-top"><span>Question '+(r.i+1)+' of '+r.qs.length+'</span><div class="qz-bar"><i style="width:'+(r.i/r.qs.length*100)+'%"></i></div><span class="qz-pill">'+r.pts+' pts</span>'+(r.streak>=2?'<span class="qz-pill hot">Streak '+r.streak+'</span>':'')+'</div>'+(timed?'<div class="qz-time"><i id="qzT"></i></div>':'')+
-      '<div class="qz-card"><div class="qz-q"></div><div class="qz-art" id="qzArt"></div><div class="qz-hint" id="qzHint"></div><div class="qz-opts" id="qzOpts"></div><div id="qzFb"></div></div></div>';
-    const art=$('qzArt'),opts=$('qzOpts'),hint=$('qzHint');
+    const f=it.alpha?null:facts(it.k),dots=r.qs.map((_,i)=>'<i class="'+(i<r.i?(r.res[i]?'ok':'bad'):(i===r.i?'cur':''))+'"></i>').join('');
+    body.innerHTML='<div class="qx"><div class="qx-head"><div class="qx-ttl"><b>'+TOPIC(QZ.cfg.topic)+'</b><span>Question '+(r.i+1)+' of '+r.qs.length+'</span></div><div class="qx-dots">'+dots+'</div><div class="qx-pills"><span class="qz-pill">'+r.pts+' pts</span>'+(r.streak>=2?'<span class="qz-pill hot">Streak '+r.streak+'</span>':'')+(timed?'<span class="qz-pill" id="qzSec">20s</span>':'')+'<button type="button" class="qx-quit" id="qxQuit">End quiz</button></div></div>'+(timed?'<div class="qz-time"><i id="qzT"></i></div>':'')+
+      '<div class="qx-play"><div class="qx-stage"><div class="qx-art" id="qzArt"></div><div class="qz-hint" id="qzHint"></div></div><div class="qx-side"><div class="qx-q" id="qzQ"></div><div class="qx-opts" id="qzOpts"></div><div id="qzFb"></div></div></div></div>';
+    const art=$('qzArt'),opts=$('qzOpts'),hint=$('qzHint'),q=$('qzQ');$('qxQuit').onclick=()=>{if(confirm('End this quiz and discard your answers?')){stopTimer();quizStart();}};
+    const hintBtn=()=>{if(it.alpha)return;const hb=document.createElement('button');hb.type='button';hb.textContent='Show hint';hb.onclick=()=>{r.hint=true;hint.innerHTML='<span>'+I.pin+f.loc+'</span><span>'+I.mv+f.mov+'</span><span>'+cat(it.k)+'</span>';};hint.appendChild(hb);};
     if(qn.kind==='name'){
-      body.querySelector('.qz-q').textContent=it.alpha?'Which letter is this?':'Which sign is this?';
-      if(it.alpha){const im=document.createElement('img');cleanImg(im,it.k);art.appendChild(im);hint.innerHTML='';}
-      else{const cv=document.createElement('canvas');cv.width=720;cv.height=420;art.appendChild(cv);artOne(cv,it.k,2.4);
-        hint.innerHTML='<span>'+I.hand+(f.two?'Two hands':'One hand')+'</span>';const hb=document.createElement('button');hb.type='button';hb.textContent='Show hint';hb.onclick=()=>{r.hint=true;hint.innerHTML='<span>'+I.hand+(f.two?'Two hands':'One hand')+'</span><span>'+I.pin+f.loc+'</span><span>'+I.mv+f.mov+'</span><span>'+cat(it.k)+'</span>';};hint.appendChild(hb);}
+      q.textContent=it.alpha?'Which letter is this?':'Which sign is this?';
+      if(it.alpha){const im=document.createElement('img');cleanImg(im,it.k);art.appendChild(im);}else{sketch(art,it.k,720);hint.innerHTML='<span>'+I.hand+(f.two?'Two hands':'One hand')+'</span>';hintBtn();}
+    }else if(qn.kind==='pick'){
+      q.textContent=it.alpha?'Which hand shows this letter?':'Which illustration shows this sign?';
+      art.innerHTML='<div class="qz-word"></div>';art.querySelector('.qz-word').textContent=qTitle(it);hintBtn();
     }else{
-      body.querySelector('.qz-q').textContent=it.alpha?'Which hand shows this letter?':'Which hand shows this sign?';
-      art.innerHTML='<div class="qz-word"></div>';art.querySelector('.qz-word').textContent=qTitle(it);hint.innerHTML='';
-      if(!it.alpha){const hb=document.createElement('button');hb.type='button';hb.textContent='Show hint';hb.onclick=()=>{r.hint=true;hint.innerHTML='<span>'+I.pin+f.loc+'</span><span>'+I.mv+f.mov+'</span>';};hint.appendChild(hb);}
+      q.textContent='Which sign matches this description?';art.innerHTML='<div class="qx-desc"></div>';art.querySelector('.qx-desc').textContent='“'+SIGNS[it.k].how+'”';
+      hint.innerHTML='<span>'+I.hand+(f.two?'Two hands':'One hand')+'</span>';
     }
     qn.opts.forEach((o,i)=>{
-      const b=document.createElement('button');b.type='button';b.className='qz-opt'+(qn.kind==='pick'?' art':'');
-      b.innerHTML='<kbd>'+(i+1)+'</kbd>';
-      if(qn.kind==='name'){const sp=document.createElement('span');sp.textContent=qTitle(o);b.appendChild(sp);}
-      else if(o.alpha){const im=document.createElement('img');cleanImg(im,o.k);b.appendChild(im);}
-      else{const cv=document.createElement('canvas');cv.width=360;cv.height=220;b.appendChild(cv);artOne(cv,o.k,1.6);}
+      const b=document.createElement('button');b.type='button';b.className='qz-opt'+(qn.kind==='pick'?' art':'');b.innerHTML='<kbd>'+(i+1)+'</kbd>';
+      if(qn.kind==='pick'){if(o.alpha){const im=document.createElement('img');cleanImg(im,o.k);b.appendChild(im);}else{const cv=document.createElement('canvas');cv.width=360;cv.height=299;b.appendChild(cv);poseFrame(cv,o.k,false);}}
+      else{const sp=document.createElement('span');sp.textContent=qTitle(o);b.appendChild(sp);}
       b.onclick=()=>quizAnswer(i);opts.appendChild(b);
     });
-    if(timed){const t0=Date.now(),T=20000,bar=$('qzT');QZ.timer=setInterval(()=>{const left=Math.max(0,T-(Date.now()-t0));bar.style.width=(left/T*100)+'%';if(left<=0){stopTimer();quizAnswer(-1);}},100);r.tStart=t0;}
+    if(timed){const t0=Date.now(),T=20000,bar=$('qzT'),sec=$('qzSec');r.tStart=t0;QZ.timer=setInterval(()=>{const left=Math.max(0,T-(Date.now()-t0));bar.style.width=(left/T*100)+'%';sec.textContent=Math.ceil(left/1000)+'s';if(left<=0){stopTimer();quizAnswer(-1);}},100);}
   }
   function quizAnswer(i){
     const r=QZ.run;if(!r||r.done)return;r.done=true;stopTimer();
@@ -2792,20 +2959,28 @@ window.AuraUser=(function(){
     btns.forEach((b,j)=>{b.disabled=true;if(j===qn.ans)b.classList.add('ok');else if(j===i)b.classList.add('bad');});
     let pts=0;if(right){r.score++;r.streak++;r.bestStreak=Math.max(r.bestStreak,r.streak);pts=10+Math.min(10,(r.streak-1)*2)+(QZ.cfg.timed?Math.max(0,Math.round((20000-(Date.now()-r.tStart))/2000)):0);if(r.hint)pts=Math.max(5,pts-5);r.pts+=pts;}
     else{r.streak=0;r.miss.push(it);}
-    const how=it.alpha?(SIGN_GUIDE[it.k]||''):SIGNS[it.k].how,last=r.i===r.qs.length-1;
-    $('qzFb').innerHTML='<div class="qz-fb '+(right?'ok':'bad')+'"><b>'+(right?'Correct! +'+pts+' pts':(i<0?'Time is up':'Not quite'))+'</b>'+(right?'':'The answer is <strong>'+qTitle(it)+'</strong>. ')+how+'</div><div class="qz-act"><button type="button" class="qz-next" id="qzNext">'+(last?'See results':'Next question')+'</button><button type="button" class="qz-sec" id="qzLearn">Learn this sign</button></div>';
+    r.res[r.i]=right;const how=it.alpha?(SIGN_GUIDE[it.k]||''):SIGNS[it.k].how,last=r.i===r.qs.length-1;
+    $('qzFb').innerHTML='<div class="qz-fb '+(right?'ok':'bad')+'"><b>'+(right?'Correct · +'+pts+' pts':(i<0?'Time is up':'Not quite'))+'</b>'+(right?'':'The answer is <strong>'+qTitle(it)+'</strong>. ')+how+'</div><div class="qz-act"><button type="button" class="qz-next" id="qzNext">'+(last?'See results':'Next question')+'</button><button type="button" class="qz-sec" id="qzLearn">Learn this sign</button></div>';
+    if(qn.kind!=='name'&&!it.alpha){const art=$('qzArt');art.innerHTML='';sketch(art,it.k,720);}
+    document.querySelectorAll('.qx-dots i')[r.i].className=right?'ok':'bad';
     $('qzNext').onclick=()=>{if(last)quizResult();else{r.i++;quizQ();}};$('qzNext').focus();$('qzLearn').onclick=()=>openModal(it.k,it.alpha);
   }
   function quizResult(){
     stopTimer();const r=QZ.run,total=r.qs.length,pct=Math.round(r.score/total*100),secs=Math.round((Date.now()-r.t0)/1000);
     AuraUser.track('quiz',{score:r.score,total});
-    const msg=pct>=90?'Outstanding!':pct>=70?'Great work!':pct>=50?'Good start':'Keep practising';
+    const log=jg(qlogKey(),[]);log.push({t:Date.now(),topic:QZ.cfg.topic,score:r.score,total,pts:r.pts});try{STORE.set(qlogKey(),JSON.stringify(log.slice(-50)));}catch(e){}
+    const msg=pct>=90?'Outstanding work':pct>=70?'Well done':pct>=50?'Good progress':'Keep practising';
     const miss=[];r.miss.forEach(m=>{if(!miss.find(x=>x.k===m.k))miss.push(m);});
-    $('lnBody').innerHTML='<div class="qz"><div class="qz-res"><div class="qz-ring" style="--p:'+pct+'"><div><b>'+pct+'%</b><span>Score</span></div></div><h2>'+msg+'</h2><p>You answered '+r.score+' of '+total+' correctly.</p>'+
+    const by={};r.qs.forEach((qn,i)=>{const c=qn.it.alpha?'Alphabet':cat(qn.it.k);by[c]=by[c]||{a:0,b:0};by[c].b++;if(r.res[i])by[c].a++;});
+    const bars=Object.keys(by).map(c=>'<div class="qx-br"><span>'+c+'</span><div><i style="width:'+Math.round(by[c].a/by[c].b*100)+'%;background:'+(COL[c]||COL.Alphabet)+'"></i></div><b>'+by[c].a+'/'+by[c].b+'</b></div>').join('');
+    $('lnBody').innerHTML='<div class="qx"><div class="qx-res"><div class="qx-resl"><div class="qz-ring" style="--p:'+pct+'"><div><b>'+pct+'%</b><span>Score</span></div></div><h2>'+msg+'</h2><p>'+r.score+' of '+total+' correct · '+TOPIC(QZ.cfg.topic)+'</p>'+
       '<div class="qz-stats"><div><b>'+r.pts+'</b><span>Points</span></div><div><b>'+r.bestStreak+'</b><span>Best streak</span></div><div><b>'+secs+'s</b><span>Time</span></div></div>'+
-      (miss.length?'<div class="qz-miss"><h4>Review these</h4><div id="qzMiss"></div></div>':'<div class="qz-miss"><h4>Perfect round — nothing to review</h4></div>')+
-      '<div class="qz-act" style="justify-content:center"><button type="button" class="qz-next" id="qzAgain">Try again</button><button type="button" class="qz-sec" id="qzNew">New quiz</button></div></div></div>';
-    const mb=$('qzMiss');if(mb)miss.forEach(m=>{const b=document.createElement('button');b.type='button';b.textContent=qTitle(m);b.onclick=()=>openModal(m.k,m.alpha);mb.appendChild(b);});
+      '<div class="qz-act" style="justify-content:center"><button type="button" class="qz-next" id="qzAgain">New set of signs</button><button type="button" class="qz-sec" id="qzNew">Change settings</button></div></div>'+
+      '<div class="qx-resr"><h3>Results by topic</h3><div class="qx-bars">'+bars+'</div><h3 style="margin-top:1.2rem">'+(miss.length?'Review these signs':'Perfect round')+'</h3><div class="qx-miss" id="qzMiss">'+(miss.length?'':'<p>Nothing to review — every answer was correct.</p>')+'</div></div></div></div>';
+    const mb=$('qzMiss');miss.forEach(m=>{const row=document.createElement('div');row.className='qx-mrow';const th=document.createElement('div');th.className='qx-th';
+      if(m.alpha){const im=document.createElement('img');cleanImg(im,m.k);th.appendChild(im);}else{const cv=document.createElement('canvas');cv.width=160;cv.height=133;th.appendChild(cv);poseFrame(cv,m.k,false);}
+      row.appendChild(th);const t=document.createElement('div');t.innerHTML='<b></b><small></small>';t.querySelector('b').textContent=qTitle(m);t.querySelector('small').textContent=m.alpha?'Alphabet':cat(m.k);row.appendChild(t);
+      const bt=document.createElement('button');bt.type='button';bt.textContent='Learn';bt.onclick=()=>openModal(m.k,m.alpha);row.appendChild(bt);mb.appendChild(row);});
     $('qzAgain').onclick=quizBegin;$('qzNew').onclick=quizStart;
     if(pct>=90)AuraUser.toast('Great score!',pct+'% in the quiz');
   }
